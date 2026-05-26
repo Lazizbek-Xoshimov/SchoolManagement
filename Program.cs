@@ -1,5 +1,4 @@
-﻿using SchoolManagement.Models;
-using SchoolManagement.Services.Students;
+﻿using SchoolManagement.Menus;
 
 namespace SchoolManagement;
 
@@ -7,34 +6,37 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        IStudentService studentService = new StudentService();
+        string outputSelection = string.Empty;
 
-        for (int i = 1; i <= 10; i++)
+        do
         {
-            Student student = new Student();
+            StudentMenu studentMenu = new StudentMenu();
 
-            Console.WriteLine($"Enter student {i}'s details.");
-            Console.Write("Enter student's full name: ");
-            student.FullName = Console.ReadLine();
+            Console.Write("Select the necessary section: ");
+            int option = int.Parse(Console.ReadLine());
 
-            Console.Write("Enter student's phone number: ");
-            student.PhoneNumber = Console.ReadLine();
+            switch (option)
+            {
+                case 1 :
+                    {
+                        studentMenu.GetAllStudentsMenu();
+                        break;
+                    }
+                case 2:
+                    {
+                        studentMenu.CreateStudentMenu();
+                        break;
+                    }
+                default:
+                    {
+                        Console.WriteLine("You have selected the wrong section.");
+                        break;
+                    }
+            }
 
-            studentService.CreateStudent(student);
-        }
-
-        Student[] students = studentService.GetAllStudents();
-        foreach(Student item in students)
-        {
-            if (item is null)
-                continue;
-            Console.WriteLine(
-                $"""
-                StudentId: {item.StudentId}
-                Student full name: {item.FullName}
-                Student phone number: {item.PhoneNumber}
-
-                """);
-        }
+            Console.WriteLine("Do you want to exit the program?");
+            Console.Write("(yes/no): ");
+            outputSelection = Console.ReadLine();
+        } while (outputSelection == "no");
     }
 }
