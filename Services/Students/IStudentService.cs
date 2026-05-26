@@ -4,7 +4,7 @@ namespace SchoolManagement.Services.Students;
 
 public interface IStudentService
 {
-    public void CreateStudent(Student student);
+    public bool CreateStudent(Student student);
 
     public Student[] GetAllStudents();
 

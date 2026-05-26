@@ -26,7 +26,12 @@ public class StudentMenu
         Console.Write("Enter student's age: ");
         student.Age = int.Parse(Console.ReadLine());
 
-        studentService.CreateStudent(student);
+        bool isAdded = studentService.CreateStudent(student);
+
+        if (isAdded)
+            Console.WriteLine("Data added to the database.");
+        else 
+            Console.WriteLine("Data not added to database. Database is full.");
     }
 
     public void GetAllStudentsMenu()
@@ -47,7 +52,11 @@ public class StudentMenu
 
     public void AddRandomStudentsMenu()
     {
-        studentService.AddRandomStudents();
-        Console.WriteLine("Successful.");
+        bool isAdded = studentService.AddRandomStudents();
+
+        if (isAdded)
+            Console.WriteLine("The database was filled with random students.");
+        else
+            Console.WriteLine("Data not added to database. Database is full.");
     }
 }
