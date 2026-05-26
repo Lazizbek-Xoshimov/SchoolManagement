@@ -22,4 +22,34 @@ public class StudentService : IStudentService
     {
         return students;
     }
+
+    public bool AddRandomStudents()
+    {
+        string[] fullNames = 
+        {
+            "Alexander Thompson", 
+            "Olivia Martinez",
+            "Daniel Robinson",
+            "Sophia Carter",
+            "Benjamin Lewis",
+            "Isabella Walker",
+            "Matthew Hall",
+            "Charlotte Young",
+            "Christopher Allen",
+            "Amelia King"
+        };
+
+        for (int i = 0; i < 10; i++)
+        {
+            Student student = new Student();
+            Random random = new Random();
+
+            student.FullName = fullNames[random.Next(9)];
+            student.Age = random.Next(18, 27);
+
+            CreateStudent(student);
+        }
+
+        return true;
+    }
 }

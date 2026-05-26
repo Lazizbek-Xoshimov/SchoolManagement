@@ -7,4 +7,6 @@ public interface IStudentService
     public void CreateStudent(Student student);
 
     public Student[] GetAllStudents();
+
+    public bool AddRandomStudents();
 }

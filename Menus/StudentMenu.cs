@@ -6,29 +6,27 @@ namespace SchoolManagement.Menus;
 public class StudentMenu
 {
     IStudentService studentService = new StudentService();
-
-    public StudentMenu()
+    
+    public void ShowOptions()
     {
         Console.WriteLine("Welcome to the student section.");
         Console.WriteLine("1. View student information");
         Console.WriteLine("2. Add student information");
+        Console.WriteLine("3. Add a random student row");
     }
 
     public void CreateStudentMenu()
     {
-        for (int i = 1; i <= 10; i++)
-        {
-            Student student = new Student();
+        Student student = new Student();
 
-            Console.WriteLine($"Enter student {i}'s details.");
-            Console.Write("Enter student's full name: ");
-            student.FullName = Console.ReadLine();
+        Console.WriteLine($"Enter student's details.");
+        Console.Write("Enter student's full name: ");
+        student.FullName = Console.ReadLine();
 
-            Console.Write("Enter student's phone number: ");
-            student.PhoneNumber = Console.ReadLine();
+        Console.Write("Enter student's age: ");
+        student.Age = int.Parse(Console.ReadLine());
 
-            studentService.CreateStudent(student);
-        }
+        studentService.CreateStudent(student);
     }
 
     public void GetAllStudentsMenu()
@@ -42,9 +40,14 @@ public class StudentMenu
                 $"""
                 StudentId: {item.StudentId}
                 Student full name: {item.FullName}
-                Student phone number: {item.PhoneNumber}
-
+                Student phone number: {item.Age}
                 """);
         }
+    }
+
+    public void AddRandomStudentsMenu()
+    {
+        studentService.AddRandomStudents();
+        Console.WriteLine("Successful.");
     }
 }

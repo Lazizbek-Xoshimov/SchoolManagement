@@ -6,18 +6,18 @@ public class Program
 {
     public static void Main(string[] args)
     {
+        StudentMenu studentMenu = new StudentMenu();
         string outputSelection = string.Empty;
 
         do
         {
-            StudentMenu studentMenu = new StudentMenu();
-
+            studentMenu.ShowOptions();
             Console.Write("Select the necessary section: ");
             int option = int.Parse(Console.ReadLine());
 
             switch (option)
             {
-                case 1 :
+                case 1:
                     {
                         studentMenu.GetAllStudentsMenu();
                         break;
@@ -25,6 +25,11 @@ public class Program
                 case 2:
                     {
                         studentMenu.CreateStudentMenu();
+                        break;
+                    }
+                case 3:
+                    {
+                        studentMenu.AddRandomStudentsMenu();
                         break;
                     }
                 default:
