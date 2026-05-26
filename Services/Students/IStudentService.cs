@@ -11,4 +11,6 @@ public interface IStudentService
     public bool AddRandomStudents();
 
     public bool ModifyStudent(int studentId, Student student);
+
+    public bool DeleteStudent(int studentId);
 }

@@ -19,7 +19,7 @@ public class Program
             {
                 case 1:
                     {
-                        studentMenu.GetAllStudentsMenu();
+                        studentMenu.AddRandomStudentsMenu();
                         break;
                     }
                 case 2:
@@ -29,12 +29,18 @@ public class Program
                     }
                 case 3:
                     {
-                        studentMenu.AddRandomStudentsMenu();
+                        studentMenu.GetAllStudentsMenu();
                         break;
                     }
-                case 4:
+
+                case 5:
                     {
                         studentMenu.ModifyStudentMenu();
+                        break;
+                    }
+                case 6:
+                    {
+                        studentMenu.DeleteStudentMenu();
                         break;
                     }
                 default:

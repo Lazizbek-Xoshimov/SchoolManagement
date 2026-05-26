@@ -9,15 +9,15 @@ public class StudentService : IStudentService
 
     public bool CreateStudent(Student student)
     {
-        if (indexOfStudent < 10)
+        if (indexOfStudent < students.Length)
         {
             student.StudentId = indexOfStudent;
             students[indexOfStudent++] = student;
 
             return true;
         }
-        else
-            return false;
+
+        return false;
     }
 
     public Student[] GetAllStudents()
@@ -27,7 +27,7 @@ public class StudentService : IStudentService
 
     public bool AddRandomStudents()
     {
-        if (indexOfStudent < 10)
+        if (indexOfStudent < students.Length)
         {
             string[] fullNames = 
             {
@@ -43,12 +43,12 @@ public class StudentService : IStudentService
                 "Amelia King"
             };
 
-            for (int i = indexOfStudent; i < 10; i++)
+            for (int i = indexOfStudent; i < students.Length; i++)
             {
                 Student student = new Student();
                 Random random = new Random();
 
-                student.FullName = fullNames[random.Next(9)];
+                student.FullName = fullNames[random.Next(students.Length)];
                 student.Age = random.Next(18, 27);
 
                 CreateStudent(student);
@@ -66,6 +66,19 @@ public class StudentService : IStudentService
         {
             students[studentId].FullName = student.FullName;
             students[studentId].Age = student.Age;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool DeleteStudent(int studentId)
+    {
+        if (studentId > 0 && studentId < indexOfStudent)
+        {
+            students[studentId] = null;
+            Array.Resize(ref students, indexOfStudent + 1);
 
             return true;
         }
