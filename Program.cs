@@ -18,40 +18,26 @@ public class Program
             switch (option)
             {
                 case 1:
-                    {
-                        studentMenu.AddRandomStudentsMenu();
-                        break;
-                    }
+                    studentMenu.AddRandomStudentsMenu();
+                    break;
                 case 2:
-                    {
-                        studentMenu.CreateStudentMenu();
-                        break;
-                    }
+                    studentMenu.CreateStudentMenu();
+                    break;
                 case 3:
-                    {
-                        studentMenu.GetAllStudentsMenu();
-                        break;
-                    }
+                    studentMenu.GetAllStudentsMenu();
+                    break;
                 case 4:
-                    {
-                        studentMenu.GetStudentsByIdMenu();
-                        break;
-                    }
+                    studentMenu.GetStudentsByIdMenu();
+                    break;
                 case 5:
-                    {
-                        studentMenu.ModifyStudentMenu();
-                        break;
-                    }
+                    studentMenu.ModifyStudentMenu();
+                    break;
                 case 6:
-                    {
-                        studentMenu.DeleteStudentMenu();
-                        break;
-                    }
+                    studentMenu.DeleteStudentMenu();
+                    break;
                 default:
-                    {
-                        Console.WriteLine("You have selected the wrong section.");
-                        break;
-                    }
+                    Console.WriteLine("You have selected the wrong section.");
+                    break;
             }
 
             Console.WriteLine("Do you want to exit the program?");
