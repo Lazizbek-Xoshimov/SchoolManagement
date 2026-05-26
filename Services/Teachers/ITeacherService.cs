@@ -1,0 +1,8 @@
+using SchoolManagement.Models;
+
+namespace SchoolManagement.Services.Teachers;
+
+public interface ITeacherService
+{
+    public bool CreateTeacher(Teacher teacher);
+}
