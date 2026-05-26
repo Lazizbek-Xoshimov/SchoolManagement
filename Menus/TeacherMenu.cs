@@ -12,6 +12,7 @@ public class TeacherMenu
         Console.WriteLine("Welcome to the teacher section.");
         Console.WriteLine("1. Add random teacher information");
         Console.WriteLine("2. Add a new teacher");
+        Console.WriteLine("3. Get the value of teacher by ID");
     }
 
     public void AddRandomTeachersMenu()
@@ -40,5 +41,22 @@ public class TeacherMenu
             Console.WriteLine("Teacher added to the database.");
         else
             Console.WriteLine("Database is full.");
+    }
+
+    public void GetTeacherByIdMenu()
+    {
+        Console.Write("Enter the teacher ID you're looking for: ");
+        int teacherId = int.Parse(Console.ReadLine());
+
+        Teacher teacher = teacherService.GetTeacherById(teacherId);
+
+        if (teacher is null)
+            Console.WriteLine($"Teacher with ID {teacherId} not found.");
+        else
+        {
+            Console.WriteLine($"Teacher's ID: {teacher.TeacherId}");
+            Console.WriteLine($"Teacher's full name: {teacher.FullName}");
+            Console.WriteLine($"Teacher's subject: {teacher.Subject}");
+        }
     }
 }

@@ -6,4 +6,6 @@ public interface ITeacherService
 {
     public bool AddRandomTeachers();
     public bool CreateTeacher(Teacher teacher);
+
+    public Teacher GetTeacherById(int teacherId);
 }

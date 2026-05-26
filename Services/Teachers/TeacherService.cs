@@ -69,4 +69,15 @@ public class TeacherService : ITeacherService
 
         return false;
     }
+
+    public Teacher GetTeacherById(int teacherId)
+    {
+        if (teacherId >= 0 && teacherId <= indexOfTeacher)
+        {
+            Teacher teacher = teachers[teacherId];
+            return teacher;
+        }
+
+        return null;
+    }
 }
