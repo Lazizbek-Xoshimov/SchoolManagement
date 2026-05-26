@@ -11,4 +11,6 @@ public interface ITeacherService
     public Teacher[] GetAllTeachers();
 
     public bool ModifyTeacher(int teacherId, Teacher teacher);
+
+    public bool DeleteTeacher(int teacherId);
 }

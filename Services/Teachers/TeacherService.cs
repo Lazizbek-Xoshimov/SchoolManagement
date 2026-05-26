@@ -98,4 +98,17 @@ public class TeacherService : ITeacherService
 
         return false;
     }
+
+    public bool DeleteTeacher(int teacherId)
+    {
+        if (teacherId >= 0 && teacherId <= indexOfTeacher)
+        {
+            teachers[teacherId] = null;
+            Array.Resize(ref teachers, indexOfTeacher + 1);
+            
+            return true;
+        }
+
+        return false;
+    }
 }
