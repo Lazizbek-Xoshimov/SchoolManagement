@@ -80,4 +80,9 @@ public class TeacherService : ITeacherService
 
         return null;
     }
+
+    public Teacher[] GetAllTeachers()
+    {
+        return teachers;
+    }
 }

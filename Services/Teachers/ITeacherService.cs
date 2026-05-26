@@ -8,4 +8,5 @@ public interface ITeacherService
     public bool CreateTeacher(Teacher teacher);
 
     public Teacher GetTeacherById(int teacherId);
+    public Teacher[] GetAllTeachers();
 }

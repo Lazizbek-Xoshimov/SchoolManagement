@@ -13,6 +13,7 @@ public class TeacherMenu
         Console.WriteLine("1. Add random teacher information");
         Console.WriteLine("2. Add a new teacher");
         Console.WriteLine("3. Get the value of teacher by ID");
+        Console.WriteLine("4. Get all teachers' information");
     }
 
     public void AddRandomTeachersMenu()
@@ -57,6 +58,23 @@ public class TeacherMenu
             Console.WriteLine($"Teacher's ID: {teacher.TeacherId}");
             Console.WriteLine($"Teacher's full name: {teacher.FullName}");
             Console.WriteLine($"Teacher's subject: {teacher.Subject}");
+        }
+    }
+
+    public void GetAllTeachersMenu()
+    {
+        Teacher[] teachers = teacherService.GetAllTeachers();
+
+        if (teachers is null)
+            Console.WriteLine("There's no teacher information in the database.");
+        else
+        {
+            foreach (Teacher teacher in teachers)
+            {
+                Console.WriteLine($"Teacher's ID: {teacher.TeacherId}");
+                Console.WriteLine($"Teacher's full name: {teacher.FullName}");
+                Console.WriteLine($"Teacher's subject: {teacher.Subject}");
+            }
         }
     }
 }
