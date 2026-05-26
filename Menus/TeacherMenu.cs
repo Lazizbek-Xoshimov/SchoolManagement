@@ -7,9 +7,13 @@ public class TeacherMenu
 {
     ITeacherService teacherService = new TeacherService();
 
-    public void Showoptions()
+    public void ShowOptions()
     {
-        Console.WriteLine("Welcome to the teacher section.");
+        Console.Clear();
+        Console.BackgroundColor = ConsoleColor.DarkYellow;
+        Console.ForegroundColor = ConsoleColor.Black;
+        Console.WriteLine("Teacher section.");
+        Console.ResetColor();
         Console.WriteLine("1. Add random teacher information");
         Console.WriteLine("2. Add a new teacher");
         Console.WriteLine("3. Get the value of teacher by ID");

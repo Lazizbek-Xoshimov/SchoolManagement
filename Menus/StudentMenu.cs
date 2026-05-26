@@ -9,7 +9,11 @@ public class StudentMenu
     
     public void ShowOptions()
     {
-        Console.WriteLine("Welcome to the student section.");
+        Console.Clear();
+        Console.BackgroundColor = ConsoleColor.DarkGreen;
+        Console.ForegroundColor = ConsoleColor.Black;
+        Console.WriteLine("Student section.");
+        Console.ResetColor();
         Console.WriteLine("1. Add a random student row");
         Console.WriteLine("2. Add student information");
         Console.WriteLine("3. View student information");
