@@ -9,4 +9,6 @@ public interface IStudentService
     public Student[] GetAllStudents();
 
     public bool AddRandomStudents();
+
+    public bool ModifyStudent(int studentId, Student student);
 }

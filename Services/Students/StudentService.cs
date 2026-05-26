@@ -59,4 +59,17 @@ public class StudentService : IStudentService
         
         return false;
     }
+
+    public bool ModifyStudent(int studentId, Student student)
+    {
+        if (studentId > 0 && studentId < indexOfStudent)
+        {
+            students[studentId].FullName = student.FullName;
+            students[studentId].Age = student.Age;
+
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -32,6 +32,11 @@ public class Program
                         studentMenu.AddRandomStudentsMenu();
                         break;
                     }
+                case 4:
+                    {
+                        studentMenu.ModifyStudentMenu();
+                        break;
+                    }
                 default:
                     {
                         Console.WriteLine("You have selected the wrong section.");

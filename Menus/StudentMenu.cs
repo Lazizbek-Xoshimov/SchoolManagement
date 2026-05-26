@@ -13,6 +13,7 @@ public class StudentMenu
         Console.WriteLine("1. View student information");
         Console.WriteLine("2. Add student information");
         Console.WriteLine("3. Add a random student row");
+        Console.WriteLine("4. Change the student value");
     }
 
     public void CreateStudentMenu()
@@ -58,5 +59,26 @@ public class StudentMenu
             Console.WriteLine("The database was filled with random students.");
         else
             Console.WriteLine("Data not added to database. Database is full.");
+    }
+
+    public void ModifyStudentMenu()
+    {
+        Student student = new Student();
+
+        Console.Write("Enter the student ID you want to change: ");
+        int studentId = int.Parse(Console.ReadLine());
+
+        Console.Write("Enter student's full name: ");
+        student.FullName = Console.ReadLine();
+
+        Console.Write("Enter student's age: ");
+        student.Age = int.Parse(Console.ReadLine());
+
+        bool isModified = studentService.ModifyStudent(studentId, student);
+
+        if (isModified)
+            Console.WriteLine($"Student data in index {studentId} has been changed.");
+        else
+            Console.WriteLine($"No student with this {studentId} was found.");
     }
 }
