@@ -9,4 +9,6 @@ public interface ITeacherService
 
     public Teacher GetTeacherById(int teacherId);
     public Teacher[] GetAllTeachers();
+
+    public bool ModifyTeacher(int teacherId, Teacher teacher);
 }

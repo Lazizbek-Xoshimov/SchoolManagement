@@ -85,4 +85,17 @@ public class TeacherService : ITeacherService
     {
         return teachers;
     }
+
+    public bool ModifyTeacher(int teacherId, Teacher teacher)
+    {
+        if (teacherId >= 0 && teacherId <= indexOfTeacher)
+        {
+            teachers[teacherId].FullName = teacher.FullName;
+            teachers[teacherId].Subject = teacher.Subject;
+
+            return true;
+        }
+
+        return false;
+    }
 }

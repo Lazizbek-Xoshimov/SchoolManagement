@@ -77,4 +77,25 @@ public class TeacherMenu
             }
         }
     }
+
+    public void ModifyTeacherMenu()
+    {
+        Teacher teacher = new Teacher();
+
+        Console.Write("Enter the teacher ID to be changed: ");
+        int teacherId = int.Parse(Console.ReadLine());
+
+        Console.Write("Enter the teacher's full name: ");
+        teacher.FullName = Console.ReadLine();
+
+        Console.Write("Enter which subject teacher: ");
+        teacher.Subject = Console.ReadLine();
+
+        bool isModified = teacherService.ModifyTeacher(teacherId, teacher);
+
+        if (isModified)
+            Console.WriteLine($"The teacher's information on ID {teacherId} has been changed.");
+        else 
+            Console.WriteLine($"No teacher information found for ID {teacherId}");
+    }
 }
