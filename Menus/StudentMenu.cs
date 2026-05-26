@@ -13,6 +13,7 @@ public class StudentMenu
         Console.WriteLine("1. Add a random student row");
         Console.WriteLine("2. Add student information");
         Console.WriteLine("3. View student information");
+        Console.WriteLine("4. View student information by ID");
         Console.WriteLine("5. Change the student value");
         Console.WriteLine("6. Delete student data");
     }
@@ -58,6 +59,26 @@ public class StudentMenu
                 StudentId: {item.StudentId}
                 Student full name: {item.FullName}
                 Student phone number: {item.Age}
+                """);
+        }
+    }
+
+    public void GetStudentsByIdMenu()
+    {
+        Console.Write("Enter the ID of the student you want to get information about: ");
+        int studentId = int.Parse(Console.ReadLine());
+
+        Student student = studentService.GetStudentById(studentId);
+
+        if (student is null)
+            Console.WriteLine($"No student with ID {studentId} found.");
+        else
+        {
+            Console.WriteLine(
+                $"""
+                StudentId: {student.StudentId}
+                Student full name: {student.FullName}
+                Student phone number: {student.Age}
                 """);
         }
     }

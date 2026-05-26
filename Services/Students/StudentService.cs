@@ -20,11 +20,6 @@ public class StudentService : IStudentService
         return false;
     }
 
-    public Student[] GetAllStudents()
-    {
-        return students;
-    }
-
     public bool AddRandomStudents()
     {
         if (indexOfStudent < students.Length)
@@ -60,9 +55,22 @@ public class StudentService : IStudentService
         return false;
     }
 
+    public Student[] GetAllStudents()
+    {
+        return students;
+    }
+
+    public Student GetStudentById(int studentId)
+    {
+        if (studentId >= 0 && studentId < indexOfStudent)
+            return students[studentId];
+        
+        return null;
+    }
+
     public bool ModifyStudent(int studentId, Student student)
     {
-        if (studentId > 0 && studentId < indexOfStudent)
+        if (studentId >= 0 && studentId < indexOfStudent)
         {
             students[studentId].FullName = student.FullName;
             students[studentId].Age = student.Age;
@@ -75,7 +83,7 @@ public class StudentService : IStudentService
 
     public bool DeleteStudent(int studentId)
     {
-        if (studentId > 0 && studentId < indexOfStudent)
+        if (studentId >= 0 && studentId < indexOfStudent)
         {
             students[studentId] = null;
             Array.Resize(ref students, indexOfStudent + 1);

@@ -32,7 +32,11 @@ public class Program
                         studentMenu.GetAllStudentsMenu();
                         break;
                     }
-
+                case 4:
+                    {
+                        studentMenu.GetStudentsByIdMenu();
+                        break;
+                    }
                 case 5:
                     {
                         studentMenu.ModifyStudentMenu();
