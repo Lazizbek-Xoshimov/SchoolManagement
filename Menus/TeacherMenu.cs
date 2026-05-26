@@ -10,7 +10,18 @@ public class TeacherMenu
     public void Showoptions()
     {
         Console.WriteLine("Welcome to the teacher section.");
-        Console.WriteLine("1. Add a new teacher");
+        Console.WriteLine("1. Add random teacher information");
+        Console.WriteLine("2. Add a new teacher");
+    }
+
+    public void AddRandomTeachersMenu()
+    {
+        bool isAdded = teacherService.AddRandomTeachers();
+
+        if (isAdded)
+            Console.WriteLine("Database filled with random teacher data.");
+        else
+            Console.WriteLine("Database is full.");
     }
 
     public void CreateTeacherMenu()
