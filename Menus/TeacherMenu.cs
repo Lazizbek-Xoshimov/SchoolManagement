@@ -71,17 +71,18 @@ public class TeacherMenu
     {
         Teacher[] teachers = teacherService.GetAllTeachers();
 
-        if (teachers is null)
-            Console.WriteLine("There's no teacher information in the database.");
-        else
+        foreach (Teacher teacher in teachers)
         {
-            foreach (Teacher teacher in teachers)
+            if (teacher is null)
+                continue;
+            else
             {
                 Console.WriteLine($"Teacher's ID: {teacher.TeacherId}");
                 Console.WriteLine($"Teacher's full name: {teacher.FullName}");
                 Console.WriteLine($"Teacher's subject: {teacher.Subject}");
             }
         }
+
     }
 
     public void ModifyTeacherMenu()
