@@ -22,6 +22,34 @@ public class TeacherMenu
         Console.WriteLine("6. Delete teacher data");
     }
 
+    public void SelectOption(int option)
+    {
+        switch (option)
+        {
+            case 1:
+                this.AddRandomTeachersMenu();
+                break;
+            case 2:
+                this.CreateTeacherMenu();
+                break;
+            case 3:
+                this.GetTeacherByIdMenu();
+                break;
+            case 4:
+                this.GetAllTeachersMenu();
+                break;
+            case 5:
+                this.ModifyTeacherMenu();
+                break;
+            case 6:
+                this.DeleteTeacherMenu();
+                break;
+            default:
+                Console.WriteLine("You have selected the wrong section.");
+                break;
+        }
+    }
+
     public void AddRandomTeachersMenu()
     {
         bool isAdded = teacherService.AddRandomTeachers();

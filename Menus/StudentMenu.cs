@@ -23,6 +23,37 @@ public class StudentMenu
         Console.WriteLine("7. Search for students by name");
     }
 
+    public void SelectOption(int option)
+    {
+        switch (option)
+        {
+            case 1:
+                this.AddRandomStudentsMenu();
+                break;
+            case 2:
+                this.CreateStudentMenu();
+                break;
+            case 3:
+                this.GetAllStudentsMenu();
+                break;
+            case 4:
+                this.GetStudentsByIdMenu();
+                break;
+            case 5:
+                this.ModifyStudentMenu();
+                break;
+            case 6:
+                this.DeleteStudentMenu();
+                break;
+            case 7:
+                this.GetStudentsByNameMenu();
+                break;
+            default:
+                Console.WriteLine("You have selected the wrong section.");
+                break;
+        }
+    }
+
     public void AddRandomStudentsMenu()
     {
         studentService.AddRandomStudents();

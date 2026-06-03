@@ -30,33 +30,7 @@ public class Program
                         Console.Write("Select the necessary section: ");
                         int optionStudent = int.Parse(Console.ReadLine());
 
-                        switch (optionStudent)
-                        {
-                            case 1:
-                                studentMenu.AddRandomStudentsMenu();
-                                break;
-                            case 2:
-                                studentMenu.CreateStudentMenu();
-                                break;
-                            case 3:
-                                studentMenu.GetAllStudentsMenu();
-                                break;
-                            case 4:
-                                studentMenu.GetStudentsByIdMenu();
-                                break;
-                            case 5:
-                                studentMenu.ModifyStudentMenu();
-                                break;
-                            case 6:
-                                studentMenu.DeleteStudentMenu();
-                                break;
-                            case 7:
-                                studentMenu.GetStudentsByNameMenu();
-                                break;
-                            default:
-                                Console.WriteLine("You have selected the wrong section.");
-                                break;
-                        }
+                        studentMenu.SelectOption(optionStudent);
 
                         Console.WriteLine("Do you want to exit the program?");
                         Console.Write("(yes/no): ");
@@ -74,32 +48,9 @@ public class Program
                     {
                         teacherMenu.ShowOptions();
                         Console.Write("Select the necessary section: ");
-                        int optionStudent = int.Parse(Console.ReadLine());
+                        int optionTeacher = int.Parse(Console.ReadLine());
 
-                        switch (optionStudent)
-                        {
-                            case 1:
-                                teacherMenu.AddRandomTeachersMenu();
-                                break;
-                            case 2:
-                                teacherMenu.CreateTeacherMenu();
-                                break;
-                            case 3:
-                                teacherMenu.GetTeacherByIdMenu();
-                                break;
-                            case 4:
-                                teacherMenu.GetAllTeachersMenu();
-                                break;
-                            case 5:
-                                teacherMenu.ModifyTeacherMenu();
-                                break;
-                            case 6:
-                                teacherMenu.DeleteTeacherMenu();
-                                break;
-                            default:
-                                Console.WriteLine("You have selected the wrong section.");
-                                break;
-                        }
+                        teacherMenu.SelectOption(optionTeacher);
 
                         Console.WriteLine("Do you want to exit the program?");
                         Console.Write("(yes/no): ");
