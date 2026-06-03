@@ -11,6 +11,7 @@ public interface IStudentService
     public Student GetStudentById(int studentId);
     public List<Student> GetStudentsByName(string name);
     public List<Student> GetPaginatedStudents(int page, int pageSize);
+    public int GetStudentsCount();
 
     public bool ModifyStudent(int studentId, Student student);
 

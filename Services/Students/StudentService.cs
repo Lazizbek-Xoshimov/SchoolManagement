@@ -74,6 +74,11 @@ public class StudentService : IStudentService
         return returnedStudents;
     }
 
+    public int GetStudentsCount()
+    {
+        return students.Count();
+    }
+
     public bool ModifyStudent(int studentId, Student student)
     {
         Student modifiedStudent = this.GetStudentById(studentId);

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using SchoolManagement.Models;
 using SchoolManagement.Services.Students;
 
@@ -22,6 +23,7 @@ public class StudentMenu
         Console.WriteLine("6. Delete student data");
         Console.WriteLine("7. Search for students by name");
         Console.WriteLine("8. Get student information on the page");
+        Console.WriteLine("9. Get the number of students in the database");
     }
 
     public void SelectOption(int option)
@@ -51,6 +53,9 @@ public class StudentMenu
                 break;
             case 8:
                 this.GetPaginatedStudentsMenu();
+                break;
+            case 9:
+                this.GetStudentsCountMenu();
                 break;
             default:
                 Console.WriteLine("You have selected the wrong section.");
@@ -197,5 +202,15 @@ public class StudentMenu
                 Console.WriteLine($"Student phone number: {student.Age}");
             }
         }
+    }
+
+    public void GetStudentsCountMenu()
+    {
+        int studentsCount = studentService.GetStudentsCount();
+
+        if (studentsCount == 0)
+            Console.WriteLine("The database is empty.");
+        else 
+            Console.WriteLine($"There are {studentsCount} students in the database.");
     }
 }
