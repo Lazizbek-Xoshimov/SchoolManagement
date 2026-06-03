@@ -33,12 +33,12 @@ public class StudentService : IStudentService
             "Amelia King"
         };
 
-        for (int i = students.Count; i < 20 - students.Count; i ++)
+        for (int i = 0; i < 10; i ++)
         {
             Student student = new Student();
             Random random = new Random();
 
-            student.StudentId = i;
+            student.StudentId = students.Count();
             student.FullName = fullNames[random.Next(10)];
             student.Age = random.Next(18, 27);
 
@@ -65,6 +65,12 @@ public class StudentService : IStudentService
     {
         List<Student> returnedStudents = students.Where(student => student.FullName.Contains(name)).ToList();
 
+        return returnedStudents;
+    }
+
+    public List<Student> GetPaginatedStudents(int page, int pageSize)
+    {
+        List<Student> returnedStudents = students.Skip((page - 1) * 10).Take(pageSize).ToList();
         return returnedStudents;
     }
 

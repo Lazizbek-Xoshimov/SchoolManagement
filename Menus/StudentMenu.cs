@@ -21,6 +21,7 @@ public class StudentMenu
         Console.WriteLine("5. Change the student value");
         Console.WriteLine("6. Delete student data");
         Console.WriteLine("7. Search for students by name");
+        Console.WriteLine("8. Get student information on the page");
     }
 
     public void SelectOption(int option)
@@ -47,6 +48,9 @@ public class StudentMenu
                 break;
             case 7:
                 this.GetStudentsByNameMenu();
+                break;
+            case 8:
+                this.GetPaginatedStudentsMenu();
                 break;
             default:
                 Console.WriteLine("You have selected the wrong section.");
@@ -163,6 +167,29 @@ public class StudentMenu
         else
         {
             Console.WriteLine($"Students named {name}:");
+            foreach (Student student in students)
+            {
+                Console.WriteLine($"StudentId: {student.StudentId}");
+                Console.WriteLine($"Student full name: {student.FullName}");
+                Console.WriteLine($"Student phone number: {student.Age}");
+            }
+        }
+    }
+
+    public void GetPaginatedStudentsMenu()
+    {
+        Console.Write("Enter the page: ");
+        int page = int.Parse(Console.ReadLine());
+
+        Console.Write("Enter the page size: ");
+        int pageSize = int.Parse(Console.ReadLine());
+
+        List<Student> students = studentService.GetPaginatedStudents(page, pageSize);
+        
+        if (students.Count == 0)
+            Console.WriteLine($"{page} page not found.");
+        else
+        {
             foreach (Student student in students)
             {
                 Console.WriteLine($"StudentId: {student.StudentId}");
