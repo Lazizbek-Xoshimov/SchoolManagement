@@ -105,4 +105,23 @@ public class StudentService : IStudentService
 
         return isDeleted;
     }
+
+    public bool AddStudentRange(params Student[] studentRange)
+    {
+        bool isAdded = true;
+        
+        for(int i = 0; i < studentRange.Length; i++)
+        {
+            for (int j = i; j < studentRange.Length - 1; j++)
+            {
+                if (studentRange[i].StudentId == studentRange[j + 1].StudentId)
+                    isAdded = false;
+            }
+        }
+
+        if (isAdded)
+            students.AddRange(studentRange);
+            
+        return isAdded;
+    }
 }

@@ -6,6 +6,7 @@ public interface IStudentService
 {
     public bool CreateStudent(Student student);
     public void AddRandomStudents();
+    public bool AddStudentRange(params Student[] studentsRange);
 
     public List<Student> GetAllStudents();
     public Student GetStudentById(int studentId);

@@ -16,14 +16,15 @@ public class StudentMenu
         Console.WriteLine("Student section.");
         Console.ResetColor();
         Console.WriteLine("1. Add a random student row");
-        Console.WriteLine("2. Add student information");
-        Console.WriteLine("3. View student information");
-        Console.WriteLine("4. View student information by ID");
-        Console.WriteLine("5. Change the student value");
-        Console.WriteLine("6. Delete student data");
-        Console.WriteLine("7. Search for students by name");
-        Console.WriteLine("8. Get student information on the page");
-        Console.WriteLine("9. Get the number of students in the database");
+        Console.WriteLine("2. Add students range");
+        Console.WriteLine("3. Add student information");
+        Console.WriteLine("4. View student information");
+        Console.WriteLine("5. View student information by ID");
+        Console.WriteLine("6. Search for students by name");
+        Console.WriteLine("7. Get student information on the page");
+        Console.WriteLine("8. Get the number of students in the database");
+        Console.WriteLine("9. Change the student value");
+        Console.WriteLine("10. Delete student data");
     }
 
     public void SelectOption(int option)
@@ -34,28 +35,31 @@ public class StudentMenu
                 this.AddRandomStudentsMenu();
                 break;
             case 2:
-                this.CreateStudentMenu();
+                this.AddStudentRangeMenu();
                 break;
             case 3:
-                this.GetAllStudentsMenu();
+                this.CreateStudentMenu();
                 break;
             case 4:
-                this.GetStudentsByIdMenu();
+                this.GetAllStudentsMenu();
                 break;
             case 5:
-                this.ModifyStudentMenu();
+                this.GetStudentsByIdMenu();
                 break;
             case 6:
-                this.DeleteStudentMenu();
-                break;
-            case 7:
                 this.GetStudentsByNameMenu();
                 break;
-            case 8:
+            case 7:
                 this.GetPaginatedStudentsMenu();
                 break;
-            case 9:
+            case 8:
                 this.GetStudentsCountMenu();
+                break;
+            case 9:
+                this.ModifyStudentMenu();
+                break;
+            case 10:
+                this.DeleteStudentMenu();
                 break;
             default:
                 Console.WriteLine("You have selected the wrong section.");
@@ -212,5 +216,39 @@ public class StudentMenu
             Console.WriteLine("The database is empty.");
         else 
             Console.WriteLine($"There are {studentsCount} students in the database.");
+    }
+
+    public void AddStudentRangeMenu()
+    {
+        List<Student> studentRange = new List<Student>();
+        string wantAdd = string.Empty;
+        
+        do
+        {
+            Student student = new Student();
+            
+            Console.WriteLine($"Enter student's details.");
+            Console.Write("Enter student's ID: ");
+            student.StudentId = int.Parse(Console.ReadLine());
+            
+            Console.Write("Enter student's full name: ");
+            student.FullName = Console.ReadLine();
+
+            Console.Write("Enter student's age: ");
+            student.Age = int.Parse(Console.ReadLine());
+
+            studentRange.Add(student);            
+            
+            Console.WriteLine("Do you want to add more?");
+            Console.Write("(yes/no): ");
+            wantAdd = Console.ReadLine();
+        } while (wantAdd.Equals("yes"));
+
+        bool isAdded = studentService.AddStudentRange(studentRange.ToArray());
+
+        if (isAdded)
+            Console.WriteLine("Students have been added to the database.");
+        else
+            Console.WriteLine("Student's ID will not be the same.");
     }
 }
