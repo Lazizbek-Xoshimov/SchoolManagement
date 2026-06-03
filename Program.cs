@@ -50,6 +50,9 @@ public class Program
                             case 6:
                                 studentMenu.DeleteStudentMenu();
                                 break;
+                            case 7:
+                                studentMenu.GetStudentsByNameMenu();
+                                break;
                             default:
                                 Console.WriteLine("You have selected the wrong section.");
                                 break;

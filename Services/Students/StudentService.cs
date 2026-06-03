@@ -61,6 +61,13 @@ public class StudentService : IStudentService
         return returnedStudents[0];
     }
 
+    public List<Student> GetStudentsByName(string name)
+    {
+        List<Student> returnedStudents = students.Where(student => student.FullName.Contains(name)).ToList();
+
+        return returnedStudents;
+    }
+
     public bool ModifyStudent(int studentId, Student student)
     {
         Student modifiedStudent = this.GetStudentById(studentId);
