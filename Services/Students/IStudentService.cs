@@ -5,9 +5,9 @@ namespace SchoolManagement.Services.Students;
 public interface IStudentService
 {
     public bool CreateStudent(Student student);
-    public bool AddRandomStudents();
+    public void AddRandomStudents();
 
-    public Student[] GetAllStudents();
+    public List<Student> GetAllStudents();
     public Student GetStudentById(int studentId);
 
     public bool ModifyStudent(int studentId, Student student);

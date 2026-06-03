@@ -4,76 +4,71 @@ namespace SchoolManagement.Services.Students;
 
 public class StudentService : IStudentService
 {
-    private Student[] students = new Student[10];
-    private int indexOfStudent = 0;
+    private List<Student> students = new List<Student>();
 
     public bool CreateStudent(Student student)
     {
-        if (indexOfStudent < students.Length)
-        {
-            student.StudentId = indexOfStudent;
-            students[indexOfStudent++] = student;
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public bool AddRandomStudents()
-    {
-        if (indexOfStudent < students.Length)
-        {
-            string[] fullNames = 
-            {
-                "Alexander Thompson", 
-                "Olivia Martinez",
-                "Daniel Robinson",
-                "Sophia Carter",
-                "Benjamin Lewis",
-                "Isabella Walker",
-                "Matthew Hall",
-                "Charlotte Young",
-                "Christopher Allen",
-                "Amelia King"
-            };
-
-            for (int i = indexOfStudent; i < students.Length; i++)
-            {
-                Student student = new Student();
-                Random random = new Random();
-
-                student.FullName = fullNames[random.Next(students.Length)];
-                student.Age = random.Next(18, 27);
-
-                CreateStudent(student);
-            }
-
-            return true;
-        }
+        if (students.Select(eachStudent => eachStudent.StudentId)
+                    .Contains(student.StudentId))
+            return false;
         
-        return false;
+        students.Add(student);
+
+        return true;
     }
 
-    public Student[] GetAllStudents()
+    public void AddRandomStudents()
+    {
+        string[] fullNames = 
+        {
+            "Alexander Thompson", 
+            "Olivia Martinez",
+            "Daniel Robinson",
+            "Sophia Carter",
+            "Benjamin Lewis",
+            "Isabella Walker",
+            "Matthew Hall",
+            "Charlotte Young",
+            "Christopher Allen",
+            "Amelia King"
+        };
+
+        for (int i = students.Count; i < 20 - students.Count; i ++)
+        {
+            Student student = new Student();
+            Random random = new Random();
+
+            student.StudentId = i;
+            student.FullName = fullNames[random.Next(10)];
+            student.Age = random.Next(18, 27);
+
+            this.CreateStudent(student);
+        }
+    }
+
+    public List<Student> GetAllStudents()
     {
         return students;
     }
 
     public Student GetStudentById(int studentId)
     {
-        if (studentId >= 0 && studentId < indexOfStudent)
-            return students[studentId];
+        List<Student> returnedStudents = students.Where(student => student.StudentId == studentId).ToList();
         
-        return null;
+        if (returnedStudents.Count == 0)
+            return null;
+
+        return returnedStudents[0];
     }
 
     public bool ModifyStudent(int studentId, Student student)
     {
-        if (studentId >= 0 && studentId < indexOfStudent)
+        Student modifiedStudent = this.GetStudentById(studentId);
+
+        if (modifiedStudent is not null)
         {
-            students[studentId].FullName = student.FullName;
-            students[studentId].Age = student.Age;
+            modifiedStudent.FullName = student.FullName;
+            modifiedStudent.Age = student.Age;
 
             return true;
         }
@@ -83,14 +78,13 @@ public class StudentService : IStudentService
 
     public bool DeleteStudent(int studentId)
     {
-        if (studentId >= 0 && studentId < indexOfStudent)
-        {
-            students[studentId] = null;
-            Array.Resize(ref students, indexOfStudent + 1);
+        bool isDeleted = false;
 
-            return true;
-        }
+        Student deletedStudent = this.GetStudentById(studentId);
 
-        return false;
+        if (deletedStudent is not null)
+            isDeleted = students.Remove(deletedStudent);
+
+        return isDeleted;
     }
 }
