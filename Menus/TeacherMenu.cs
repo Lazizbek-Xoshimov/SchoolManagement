@@ -52,12 +52,8 @@ public class TeacherMenu
 
     public void AddRandomTeachersMenu()
     {
-        bool isAdded = teacherService.AddRandomTeachers();
-
-        if (isAdded)
-            Console.WriteLine("Database filled with random teacher data.");
-        else
-            Console.WriteLine("Database is full.");
+        teacherService.AddRandomTeachers();
+        Console.WriteLine("Database filled with random teacher data.");
     }
 
     public void CreateTeacherMenu()
@@ -75,7 +71,7 @@ public class TeacherMenu
         if (isAdded)
             Console.WriteLine("Teacher added to the database.");
         else
-            Console.WriteLine("Database is full.");
+            Console.WriteLine("This is available in the teacher database.");
     }
 
     public void GetTeacherByIdMenu()
@@ -97,20 +93,19 @@ public class TeacherMenu
 
     public void GetAllTeachersMenu()
     {
-        Teacher[] teachers = teacherService.GetAllTeachers();
+        List<Teacher> teachers = teacherService.GetAllTeachers();
 
-        foreach (Teacher teacher in teachers)
+        if (teachers.Count == 0)
+            Console.WriteLine("The database is empty.");
+        else
         {
-            if (teacher is null)
-                continue;
-            else
+            foreach (Teacher teacher in teachers)
             {
                 Console.WriteLine($"Teacher's ID: {teacher.TeacherId}");
                 Console.WriteLine($"Teacher's full name: {teacher.FullName}");
                 Console.WriteLine($"Teacher's subject: {teacher.Subject}");
             }
         }
-
     }
 
     public void ModifyTeacherMenu()
@@ -131,7 +126,7 @@ public class TeacherMenu
         if (isModified)
             Console.WriteLine($"The teacher's information on ID {teacherId} has been changed.");
         else 
-            Console.WriteLine($"No teacher information found for ID {teacherId}");
+            Console.WriteLine($"Teacher with ID {teacherId} not found.");
     }
 
     public void DeleteTeacherMenu()
