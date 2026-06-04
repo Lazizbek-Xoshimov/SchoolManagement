@@ -4,91 +4,76 @@ namespace SchoolManagement.Services.Teachers;
 
 public class TeacherService : ITeacherService
 {
-    Teacher[] teachers = new Teacher[10];
-    private int indexOfTeacher = 0;
+    List<Teacher> teachers = new List<Teacher>();
 
-    public bool AddRandomTeachers()
+    public void AddRandomTeachers()
     {
-        if (indexOfTeacher < teachers.Length)
+        Random randomString = new Random();
+
+        string[] teacherFullNames =
         {
-            Random randomString = new Random();
+            "James Anderson",
+            "Emily Johnson",
+            "Michael Brown",
+            "Sophia Davis",
+            "William Miller",
+            "Olivia Wilson",
+            "Benjamin Moore",
+            "Charlotte Taylor",
+            "Daniel Thomas",
+            "Isabella White"
+        };
 
-            string[] teacherFullNames =
-            {
-                "James Anderson",
-                "Emily Johnson",
-                "Michael Brown",
-                "Sophia Davis",
-                "William Miller",
-                "Olivia Wilson",
-                "Benjamin Moore",
-                "Charlotte Taylor",
-                "Daniel Thomas",
-                "Isabella White"
-            };
+        string[] teacherSubjects =
+        {
+            "Mathematics",
+            "Physics",
+            "Chemistry",
+            "Biology",
+            "English Literature",
+            "History",
+            "Geography",
+            "Computer Science",
+            "Physical Education",
+            "Art & Design"
+        };
 
-            string[] teacherSubjects =
-            {
-                "Mathematics",
-                "Physics",
-                "Chemistry",
-                "Biology",
-                "English Literature",
-                "History",
-                "Geography",
-                "Computer Science",
-                "Physical Education",
-                "Art & Design"
-            };
+        for (int i = 0; i < 10; i++)
+        {
+            Teacher teacher = new Teacher();
 
-            for (int i = indexOfTeacher; i < teachers.Length; i++)
-            {
-                Teacher teacher = new Teacher();
+            teacher.FullName = teacherFullNames[randomString.Next(10)];
+            teacher.Subject = teacherSubjects[randomString.Next(10)];
 
-                teacher.FullName = teacherFullNames[randomString.Next(10)];
-                teacher.Subject = teacherSubjects[randomString.Next(10)];
-
-                CreateTeacher(teacher);
-            }
-
-            return true;
+            CreateTeacher(teacher);
         }
-        
-        return false;
     }
 
     public bool CreateTeacher(Teacher teacher)
     {
-        if (indexOfTeacher >= 0 && indexOfTeacher < teachers.Length)
-        {
-            teacher.TeacherId = indexOfTeacher;
-            teachers[indexOfTeacher ++] = teacher;
-            
-            return true;
-        }
+        if (teachers.Select(selectTeacher => selectTeacher.TeacherId).Contains(teacher.TeacherId))
+            return false;
 
-        return false;
+        teacher.TeacherId = teachers.Count;
+        teachers.Add(teacher);
+
+        return true;
     }
 
     public Teacher GetTeacherById(int teacherId)
     {
-        if (teacherId >= 0 && teacherId <= indexOfTeacher)
-        {
-            Teacher teacher = teachers[teacherId];
-            return teacher;
-        }
-
-        return null;
+        Teacher teacher = teachers.FirstOrDefault(teacher => teacher.TeacherId == teacherId);
+        return teacher;
     }
 
-    public Teacher[] GetAllTeachers()
+    public List<Teacher> GetAllTeachers()
     {
         return teachers;
     }
 
     public bool ModifyTeacher(int teacherId, Teacher teacher)
     {
-        if (teacherId >= 0 && teacherId <= indexOfTeacher)
+        if (teachers.Select(selectTeacher => selectTeacher.TeacherId).Contains(teacherId))
         {
             teachers[teacherId].FullName = teacher.FullName;
             teachers[teacherId].Subject = teacher.Subject;
@@ -101,10 +86,10 @@ public class TeacherService : ITeacherService
 
     public bool DeleteTeacher(int teacherId)
     {
-        if (teacherId >= 0 && teacherId <= indexOfTeacher)
+        if (teachers.Select(selectTeacher => selectTeacher.TeacherId).Contains(teacherId))
         {
-            teachers[teacherId] = null;
-            Array.Resize(ref teachers, indexOfTeacher + 1);
+            Teacher teacher = teachers.FirstOrDefault(teacher => teacher.TeacherId == teacherId);
+            teachers.Remove(teacher);
             
             return true;
         }
