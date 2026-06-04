@@ -51,10 +51,11 @@ public class TeacherService : ITeacherService
 
     public bool CreateTeacher(Teacher teacher)
     {
+        teacher.TeacherId = teachers.Count;
+
         if (teachers.Select(selectTeacher => selectTeacher.TeacherId).Contains(teacher.TeacherId))
             return false;
 
-        teacher.TeacherId = teachers.Count;
         teachers.Add(teacher);
 
         return true;
