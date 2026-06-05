@@ -87,6 +87,9 @@ public class StudentMenu
         Console.Write("Enter student's age: ");
         student.Age = int.Parse(Console.ReadLine());
 
+        Console.Write("Enter the student's course: ");
+        student.Course = int.Parse(Console.ReadLine());
+
         bool isAdded = studentService.CreateStudent(student);
 
         if (isAdded)
@@ -97,19 +100,19 @@ public class StudentMenu
 
     public void GetAllStudentsMenu()
     {
-        List<Student> students = studentService.GetAllStudents();
+        IEnumerable<IGrouping<int, Student>> studentCollection = studentService.GetAllStudents()
+            .GroupBy(student => student.Course).OrderBy(student => student.Key);
 
-        if (students.Count == 0)
+        foreach(IGrouping<int, Student> students in studentCollection)
         {
-            Console.WriteLine("The database is empty.");
-            return;
-        }
-
-        foreach(Student student in students)
-        {
-            Console.WriteLine($"StudentId: {student.StudentId}");
-            Console.WriteLine($"Student full name: {student.FullName}");
-            Console.WriteLine($"Student phone number: {student.Age}");
+            Console.WriteLine($"Students in {students.Key} course: ");
+            foreach(Student student in students)
+            {
+                Console.WriteLine($"StudentId: {student.StudentId}");
+                Console.WriteLine($"Student full name: {student.FullName}");
+                Console.WriteLine($"Student age: {student.Age}");
+            }
+            Console.WriteLine();
         }
     }
 
@@ -126,7 +129,8 @@ public class StudentMenu
         {
             Console.WriteLine($"StudentId: {student.StudentId}");
             Console.WriteLine($"Student full name: {student.FullName}");
-            Console.WriteLine($"Student phone number: {student.Age}");
+            Console.WriteLine($"Student age: {student.Age}");
+            Console.WriteLine($"Student course: {student.Course}");
         }
     }
 
@@ -142,6 +146,9 @@ public class StudentMenu
 
         Console.Write("Enter student's age: ");
         student.Age = int.Parse(Console.ReadLine());
+
+        Console.Write("Enter student's course: ");
+        student.Course = int.Parse(Console.ReadLine());
 
         bool isModified = studentService.ModifyStudent(studentId, student);
 
@@ -169,20 +176,30 @@ public class StudentMenu
         Console.Write("Enter the name of student you are looking for: ");
         string name = Console.ReadLine();
 
-        List<Student> students = studentService.GetStudentsByName(name);
+        bool isThere = false;
 
-        if (students.Count == 0)
-            Console.WriteLine($"Student named {name} not found.");
-        else
+        IEnumerable<IGrouping<bool, Student>> studentCollection = studentService.GetStudentsByName(name);
+
+        foreach(IGrouping<bool, Student> students in studentCollection)
         {
-            Console.WriteLine($"Students named {name}:");
-            foreach (Student student in students)
+            if (students.Key is true)
             {
-                Console.WriteLine($"StudentId: {student.StudentId}");
-                Console.WriteLine($"Student full name: {student.FullName}");
-                Console.WriteLine($"Student phone number: {student.Age}");
+                isThere = true;
+
+                Console.WriteLine($"Students named {name}:");
+                foreach (Student student in students)
+                {
+                    Console.WriteLine($"StudentId: {student.StudentId}");
+                    Console.WriteLine($"Student full name: {student.FullName}");
+                    Console.WriteLine($"Student age: {student.Age}");
+                    Console.WriteLine($"Student course: {student.Course}");
+                }
+                Console.WriteLine();
             }
         }
+
+        if (isThere is false)
+            Console.WriteLine($"There are no students named {name}");
     }
 
     public void GetPaginatedStudentsMenu()
@@ -203,7 +220,8 @@ public class StudentMenu
             {
                 Console.WriteLine($"StudentId: {student.StudentId}");
                 Console.WriteLine($"Student full name: {student.FullName}");
-                Console.WriteLine($"Student phone number: {student.Age}");
+                Console.WriteLine($"Student age: {student.Age}");
+                Console.WriteLine($"Student course: {student.Course}");
             }
         }
     }
@@ -236,6 +254,9 @@ public class StudentMenu
 
             Console.Write("Enter student's age: ");
             student.Age = int.Parse(Console.ReadLine());
+
+            Console.Write("Enter the student's course: ");
+            student.Course = int.Parse(Console.ReadLine());
 
             studentRange.Add(student);            
             

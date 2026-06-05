@@ -41,6 +41,7 @@ public class StudentService : IStudentService
             student.StudentId = students.Count();
             student.FullName = fullNames[random.Next(10)];
             student.Age = random.Next(18, 27);
+            student.Course = random.Next(1, 5);
 
             this.CreateStudent(student);
         }
@@ -53,18 +54,13 @@ public class StudentService : IStudentService
 
     public Student GetStudentById(int studentId)
     {
-        List<Student> returnedStudents = students.Where(student => student.StudentId == studentId).ToList();
-        
-        if (returnedStudents.Count == 0)
-            return null;
-
-        return returnedStudents[0];
+        Student returnedStudent = students.FirstOrDefault(student => student.StudentId == studentId);
+        return returnedStudent;
     }
 
-    public List<Student> GetStudentsByName(string name)
+    public IEnumerable<IGrouping<bool, Student>> GetStudentsByName(string name)
     {
-        List<Student> returnedStudents = students.Where(student => student.FullName.Contains(name)).ToList();
-
+        var returnedStudents = students.GroupBy(student => student.FullName.Contains(name));
         return returnedStudents;
     }
 

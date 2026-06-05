@@ -10,7 +10,7 @@ public interface IStudentService
 
     public List<Student> GetAllStudents();
     public Student GetStudentById(int studentId);
-    public List<Student> GetStudentsByName(string name);
+    public IEnumerable<IGrouping<bool, Student>> GetStudentsByName(string name);
     public List<Student> GetPaginatedStudents(int page, int pageSize);
     public int GetStudentsCount();
 
