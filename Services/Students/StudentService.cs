@@ -4,15 +4,15 @@ namespace SchoolManagement.Services.Students;
 
 public class StudentService : IStudentService
 {
-    private List<Student> students = new List<Student>();
+    private Dictionary<int, Student> students = new Dictionary<int, Student>();
+    private int indexOfStudent = 0;
 
     public bool CreateStudent(Student student)
     {
-        if (students.Select(eachStudent => eachStudent.StudentId)
-                    .Contains(student.StudentId))
+        if (students.Keys.Contains(student.StudentId))
             return false;
         
-        students.Add(student);
+        students.Add(indexOfStudent ++, student);
 
         return true;
     }
@@ -38,7 +38,7 @@ public class StudentService : IStudentService
             Student student = new Student();
             Random random = new Random();
 
-            student.StudentId = students.Count();
+            student.StudentId = indexOfStudent ++;
             student.FullName = fullNames[random.Next(10)];
             student.Age = random.Next(18, 27);
             student.Course = random.Next(1, 5);
@@ -47,26 +47,26 @@ public class StudentService : IStudentService
         }
     }
 
-    public List<Student> GetAllStudents()
+    public Dictionary<int, Student> GetAllStudents()
     {
         return students;
     }
 
     public Student GetStudentById(int studentId)
     {
-        Student returnedStudent = students.FirstOrDefault(student => student.StudentId == studentId);
+        Student returnedStudent = students[studentId];
         return returnedStudent;
     }
 
-    public IEnumerable<IGrouping<bool, Student>> GetStudentsByName(string name)
+    public IEnumerable<IGrouping<bool, KeyValuePair<int, Student>>> GetStudentsByName(string name)
     {
-        var returnedStudents = students.GroupBy(student => student.FullName.Contains(name));
+        var returnedStudents = students.GroupBy(student => student.Value.FullName.Contains(name));
         return returnedStudents;
     }
 
-    public List<Student> GetPaginatedStudents(int page, int pageSize)
+    public IEnumerable<KeyValuePair<int, Student>> GetPaginatedStudents(int page, int pageSize)
     {
-        List<Student> returnedStudents = students.Skip((page - 1) * 10).Take(pageSize).ToList();
+        IEnumerable<KeyValuePair<int, Student>> returnedStudents = students.Skip((page - 1) * 10).Take(pageSize);
         return returnedStudents;
     }
 
@@ -83,6 +83,7 @@ public class StudentService : IStudentService
         {
             modifiedStudent.FullName = student.FullName;
             modifiedStudent.Age = student.Age;
+            modifiedStudent.Course = student.Course;
 
             return true;
         }
@@ -97,7 +98,7 @@ public class StudentService : IStudentService
         Student deletedStudent = this.GetStudentById(studentId);
 
         if (deletedStudent is not null)
-            isDeleted = students.Remove(deletedStudent);
+            isDeleted = students.Remove(studentId);
 
         return isDeleted;
     }
@@ -116,7 +117,12 @@ public class StudentService : IStudentService
         }
 
         if (isAdded)
-            students.AddRange(studentRange);
+        {
+            foreach (var student in students)
+            {
+                this.CreateStudent(student.Value);
+            }
+        }
             
         return isAdded;
     }
