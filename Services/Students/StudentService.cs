@@ -47,14 +47,15 @@ public class StudentService : IStudentService
         }
     }
 
-    public Dictionary<int, Student> GetAllStudents()
+    public IEnumerable<IGrouping<int, KeyValuePair<int, Student>>> GetAllStudents()
     {
-        return students;
+        var studentCollection = students.GroupBy(student => student.Value.Course);
+        return studentCollection;
     }
 
     public Student GetStudentById(int studentId)
     {
-        Student returnedStudent = students[studentId];
+        Student returnedStudent = students.ContainsKey(studentId) ? students[studentId] : null;
         return returnedStudent;
     }
 

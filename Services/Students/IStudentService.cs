@@ -8,7 +8,7 @@ public interface IStudentService
     public void AddRandomStudents();
     public bool AddStudentRange(params Student[] studentsRange);
 
-    public Dictionary<int, Student> GetAllStudents();
+    public IEnumerable<IGrouping<int, KeyValuePair<int, Student>>> GetAllStudents();
     public Student GetStudentById(int studentId);
     public IEnumerable<IGrouping<bool, KeyValuePair<int, Student>>> GetStudentsByName(string name);
     public IEnumerable<KeyValuePair<int, Student>> GetPaginatedStudents(int page, int pageSize);

@@ -97,17 +97,19 @@ public class StudentMenu
 
     public void GetAllStudentsMenu()
     {
-        var studentCollection = studentService.GetAllStudents()
-            .GroupBy(student => student.Value.Course).OrderBy(student => student.Key);
+        var studentCollection = studentService.GetAllStudents();
 
-        foreach(IGrouping<int, Student> students in studentCollection)
+        if (studentCollection.Count() == 0)
+            Console.WriteLine("The database is empty.");
+
+        foreach(IGrouping<int, KeyValuePair<int, Student>> students in studentCollection)
         {
             Console.WriteLine($"Students in {students.Key} course: ");
-            foreach(Student student in students)
+            foreach(KeyValuePair<int, Student> student in students)
             {
-                Console.WriteLine($"StudentId: {student.StudentId}");
-                Console.WriteLine($"Student full name: {student.FullName}");
-                Console.WriteLine($"Student age: {student.Age}");
+                Console.WriteLine($"StudentId: {student.Value.StudentId}");
+                Console.WriteLine($"Student full name: {student.Value.FullName}");
+                Console.WriteLine($"Student age: {student.Value.Age}");
             }
             Console.WriteLine();
         }
@@ -177,21 +179,21 @@ public class StudentMenu
 
         var studentCollection = studentService.GetStudentsByName(name);
 
-        foreach(IGrouping<bool, Student> students in studentCollection)
+        foreach(var students in studentCollection)
         {
             if (students.Key is true)
             {
                 isThere = true;
 
                 Console.WriteLine($"Students named {name}:");
-                foreach (Student student in students)
+                foreach (var student in students)
                 {
-                    Console.WriteLine($"StudentId: {student.StudentId}");
-                    Console.WriteLine($"Student full name: {student.FullName}");
-                    Console.WriteLine($"Student age: {student.Age}");
-                    Console.WriteLine($"Student course: {student.Course}");
+                    Console.WriteLine($"StudentId: {student.Value.StudentId}");
+                    Console.WriteLine($"Student full name: {student.Value.FullName}");
+                    Console.WriteLine($"Student age: {student.Value.Age}");
+                    Console.WriteLine($"Student course: {student.Value.Course}");
+                    Console.WriteLine();
                 }
-                Console.WriteLine();
             }
         }
 
