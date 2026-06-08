@@ -132,4 +132,7 @@ public class StudentService : IStudentService
 
     public IDictionary<int, Student> GetCleverStudent() =>
         students.FindFirstOrDefaultCleverStudent();
+
+    public IDictionary<int, Student> GetYoungestStudent() =>
+        students.FindFirstOrDefaultYoungestStudent();
 }

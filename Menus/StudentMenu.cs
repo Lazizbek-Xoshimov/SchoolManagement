@@ -41,8 +41,9 @@ public class StudentMenu
             case 7: GetPaginatedStudentsMenu(); break;
             case 8: GetStudentsCountMenu(); break;
             case 9: GetCleverStudentMenu(); break;
-            case 10: ModifyStudentMenu(); break;
-            case 11: DeleteStudentMenu(); break;
+            case 10: GetYoungestStudentMenu(); break;
+            case 11: ModifyStudentMenu(); break;
+            case 12: DeleteStudentMenu(); break;
             default: Console.WriteLine("You have selected the wrong section."); break;
         }
     }
@@ -269,9 +270,29 @@ public class StudentMenu
     {
         var cleverStudentOnCourse = studentService.GetCleverStudent();
 
-        foreach (var room in cleverStudentOnCourse)
+        if (cleverStudentOnCourse.Count.Equals(0))
+            Console.WriteLine("The database is empty.");
+        else
         {
-            Console.WriteLine($"{room.Value.FullName} is a clever {room.Key} course.");
+            foreach (var room in cleverStudentOnCourse)
+            {
+                Console.WriteLine($"{room.Value.FullName} is a clever in {room.Key} course.");
+            }
+        }
+    }
+
+    public void GetYoungestStudentMenu()
+    {
+        var youngestStudentOnCourse = studentService.GetYoungestStudent();
+
+        if (youngestStudentOnCourse.Count.Equals(0))
+            Console.WriteLine("The database is empty.");
+        else
+        {
+            foreach (var room in youngestStudentOnCourse)
+            {
+                Console.WriteLine($"{room.Value.FullName} is a youngest in {room.Key} course.");
+            }
         }
     }
 }

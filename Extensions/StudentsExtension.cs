@@ -18,4 +18,19 @@ public static class StudentsExtension
 
         return cleverStudentOnCourse;
     }
+
+    public static IDictionary<int, Student> FindFirstOrDefaultYoungestStudent(this IDictionary<int, Student> students)
+    {
+        IDictionary <int, Student> youngestStudentOnCourse = new Dictionary<int, Student>();
+
+        var studentsOnCourse = students.GroupBy(student => student.Value.Course);
+
+        foreach (var eachStudent in studentsOnCourse)
+        {
+            var youngestStudent = eachStudent.Aggregate((first, second) => first.Value.Age < second.Value.Grade ? first : second);
+            youngestStudentOnCourse.Add(eachStudent.Key, youngestStudent.Value);
+        }
+
+        return youngestStudentOnCourse;
+    }
 }

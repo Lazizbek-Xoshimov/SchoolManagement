@@ -14,6 +14,7 @@ public interface IStudentService
     public IEnumerable<KeyValuePair<int, Student>> GetPaginatedStudents(int page, int pageSize);
     public int GetStudentsCount();
     public IDictionary<int, Student> GetCleverStudent();
+    public IDictionary<int, Student> GetYoungestStudent();
 
     public bool ModifyStudent(int studentId, Student student);
 
