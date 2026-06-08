@@ -15,11 +15,13 @@ Performing CRUD operations on Teacher and Student lists
 - *Search student by Name*
 - *Get student on the page*
 - *Get students count*
+- *Get clever student*
+- *Get youngest student*
 - *Change student*
 - *Delete student*
 
 ### 🪟 Preview
-![school_management_preview](assets/school_management_prewiev.gif)
+![school_management_preview](assets/sm_preview.gif)
 
 ### ⚙️ Technologies
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg" width="30"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dot-net/dot-net-original.svg" width="30"/>
@@ -27,15 +29,15 @@ Performing CRUD operations on Teacher and Student lists
 ## 🧑‍💻 I worked on it
 - *OOP princples: Abstraction, Encapsulation, Inheritance, Polymorphism*
 - *Elements of OOP: classes, objects, interfaces*
-- *Classes: Console, Random, user-defined classes*
+- *Classes: Console, Random, Enumerable, user-defined classes*
 - *Data types: int, string, bool*
 - *Access modifiers: public, private*
 - *Collections: Array, List\<T>, Dictionary\<TKey, TValue>*
-- *LINQ methods: Where(), FirstOrDefault(), OrderBy(), Contains()GroupBy(), Skip() & Take(), Count(), Remove(), Select()*
+- *LINQ methods: Where(), FirstOrDefault(), OrderBy(), Contains()GroupBy(), Skip() & Take(), Count(), Remove(), Select(), Aggregate()*
 - *Strings: Regular, Interpolation*
-- *Looping statements: for, do while*
+- *Looping statements: for, do while, while*
 - *Condition statements: if else, switch*
-- *Keywords: break, continue, ref*
+- *Keywords: break, continue, ref, this*
 
 ## 🤝 Future development
 - *Change data storage method to constant*
