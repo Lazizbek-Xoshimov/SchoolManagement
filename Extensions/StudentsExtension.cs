@@ -33,4 +33,7 @@ public static class StudentsExtension
 
         return youngestStudentOnCourse;
     }
+
+    public static IEnumerable<KeyValuePair<int, Student>> Paginate (this IEnumerable<KeyValuePair<int, Student>> students, int pageNumber, int pageSize) =>
+        students.Skip((pageNumber - 1) * pageSize).Take(pageSize);
 }

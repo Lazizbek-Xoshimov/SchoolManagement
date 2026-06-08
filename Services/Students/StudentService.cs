@@ -69,7 +69,7 @@ public class StudentService : IStudentService
 
     public IEnumerable<KeyValuePair<int, Student>> GetPaginatedStudents(int page, int pageSize)
     {
-        IEnumerable<KeyValuePair<int, Student>> returnedStudents = students.Skip((page - 1) * 10).Take(pageSize);
+        IEnumerable<KeyValuePair<int, Student>> returnedStudents = students.Paginate(page, pageSize);
         return returnedStudents;
     }
 
