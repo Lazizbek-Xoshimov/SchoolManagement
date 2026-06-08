@@ -24,8 +24,9 @@ public class StudentMenu
         Console.WriteLine("7. Get student information on the page");
         Console.WriteLine("8. Get the number of students in the database");
         Console.WriteLine("9. Get clever student");
-        Console.WriteLine("10. Change the student value");
-        Console.WriteLine("11. Delete student data");
+        Console.WriteLine("10. Get youngest student");
+        Console.WriteLine("11. Change the student value");
+        Console.WriteLine("12. Delete student data");
     }
 
     public void SelectOption(int option)
