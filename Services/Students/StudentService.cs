@@ -1,3 +1,4 @@
+using SchoolManagement.Extensions;
 using SchoolManagement.Models;
 
 namespace SchoolManagement.Services.Students;
@@ -41,6 +42,7 @@ public class StudentService : IStudentService
             student.StudentId = indexOfStudent ++;
             student.FullName = fullNames[random.Next(10)];
             student.Age = random.Next(18, 27);
+            student.Grade = random.Next(1, 5);
             student.Course = random.Next(1, 5);
 
             this.CreateStudent(student);
@@ -127,4 +129,7 @@ public class StudentService : IStudentService
             
         return isAdded;
     }
+
+    public IDictionary<int, Student> GetCleverStudent() =>
+        students.FindFirstOrDefaultCleverStudent();
 }

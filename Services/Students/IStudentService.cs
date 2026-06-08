@@ -13,6 +13,7 @@ public interface IStudentService
     public IEnumerable<IGrouping<bool, KeyValuePair<int, Student>>> GetStudentsByName(string name);
     public IEnumerable<KeyValuePair<int, Student>> GetPaginatedStudents(int page, int pageSize);
     public int GetStudentsCount();
+    public IDictionary<int, Student> GetCleverStudent();
 
     public bool ModifyStudent(int studentId, Student student);
 

@@ -23,47 +23,27 @@ public class StudentMenu
         Console.WriteLine("6. Search for students by name");
         Console.WriteLine("7. Get student information on the page");
         Console.WriteLine("8. Get the number of students in the database");
-        Console.WriteLine("9. Change the student value");
-        Console.WriteLine("10. Delete student data");
+        Console.WriteLine("9. Get clever student");
+        Console.WriteLine("10. Change the student value");
+        Console.WriteLine("11. Delete student data");
     }
 
     public void SelectOption(int option)
     {
         switch (option)
         {
-            case 1:
-                this.AddRandomStudentsMenu();
-                break;
-            case 2:
-                this.AddStudentRangeMenu();
-                break;
-            case 3:
-                this.CreateStudentMenu();
-                break;
-            case 4:
-                this.GetAllStudentsMenu();
-                break;
-            case 5:
-                this.GetStudentsByIdMenu();
-                break;
-            case 6:
-                this.GetStudentsByNameMenu();
-                break;
-            case 7:
-                this.GetPaginatedStudentsMenu();
-                break;
-            case 8:
-                this.GetStudentsCountMenu();
-                break;
-            case 9:
-                this.ModifyStudentMenu();
-                break;
-            case 10:
-                this.DeleteStudentMenu();
-                break;
-            default:
-                Console.WriteLine("You have selected the wrong section.");
-                break;
+            case 1: AddRandomStudentsMenu(); break;
+            case 2: AddStudentRangeMenu(); break;
+            case 3: CreateStudentMenu(); break;
+            case 4: GetAllStudentsMenu(); break;
+            case 5: GetStudentsByIdMenu(); break;
+            case 6: GetStudentsByNameMenu(); break;
+            case 7: GetPaginatedStudentsMenu(); break;
+            case 8: GetStudentsCountMenu(); break;
+            case 9: GetCleverStudentMenu(); break;
+            case 10: ModifyStudentMenu(); break;
+            case 11: DeleteStudentMenu(); break;
+            default: Console.WriteLine("You have selected the wrong section."); break;
         }
     }
 
@@ -86,6 +66,9 @@ public class StudentMenu
 
         Console.Write("Enter the student's course: ");
         student.Course = int.Parse(Console.ReadLine());
+
+        Console.Write("Enter the student's grade: ");
+        student.Grade = int.Parse(Console.ReadLine());
 
         bool isAdded = studentService.CreateStudent(student);
 
@@ -110,6 +93,7 @@ public class StudentMenu
                 Console.WriteLine($"StudentId: {student.Value.StudentId}");
                 Console.WriteLine($"Student full name: {student.Value.FullName}");
                 Console.WriteLine($"Student age: {student.Value.Age}");
+                Console.WriteLine($"Student grade: {student.Value.Grade}");
             }
             Console.WriteLine();
         }
@@ -129,6 +113,7 @@ public class StudentMenu
             Console.WriteLine($"StudentId: {student.StudentId}");
             Console.WriteLine($"Student full name: {student.FullName}");
             Console.WriteLine($"Student age: {student.Age}");
+            Console.WriteLine($"Student grade: {student.Grade}");
             Console.WriteLine($"Student course: {student.Course}");
         }
     }
@@ -148,6 +133,9 @@ public class StudentMenu
 
         Console.Write("Enter student's course: ");
         student.Course = int.Parse(Console.ReadLine());
+
+        Console.Write("Enter student's grade: ");
+        student.Grade = int.Parse(Console.ReadLine());
 
         bool isModified = studentService.ModifyStudent(studentId, student);
 
@@ -191,6 +179,7 @@ public class StudentMenu
                     Console.WriteLine($"StudentId: {student.Value.StudentId}");
                     Console.WriteLine($"Student full name: {student.Value.FullName}");
                     Console.WriteLine($"Student age: {student.Value.Age}");
+                    Console.WriteLine($"Student grade: {student.Value.Grade}");
                     Console.WriteLine($"Student course: {student.Value.Course}");
                     Console.WriteLine();
                 }
@@ -220,6 +209,7 @@ public class StudentMenu
                 Console.WriteLine($"StudentId: {student.Value.StudentId}");
                 Console.WriteLine($"Student full name: {student.Value.FullName}");
                 Console.WriteLine($"Student age: {student.Value.Age}");
+                Console.WriteLine($"Student grade: {student.Value.Grade}");
                 Console.WriteLine($"Student course: {student.Value.Course}");
             }
         }
@@ -257,6 +247,9 @@ public class StudentMenu
             Console.Write("Enter the student's course: ");
             student.Course = int.Parse(Console.ReadLine());
 
+            Console.Write("Enter student's grade: ");
+            student.Grade = int.Parse(Console.ReadLine());
+
             studentRange.Add(student);            
             
             Console.WriteLine("Do you want to add more?");
@@ -270,5 +263,15 @@ public class StudentMenu
             Console.WriteLine("Students have been added to the database.");
         else
             Console.WriteLine("Student's ID will not be the same.");
+    }
+
+    public void GetCleverStudentMenu()
+    {
+        var cleverStudentOnCourse = studentService.GetCleverStudent();
+
+        foreach (var room in cleverStudentOnCourse)
+        {
+            Console.WriteLine($"{room.Value.FullName} is a clever {room.Key} course.");
+        }
     }
 }
