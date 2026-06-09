@@ -4,12 +4,12 @@ namespace SchoolManagement.Repositories;
 
 public interface IStudentRepository
 {
-    public bool CreateStudent(Student student);
+    public void CreateStudent(Student student);
 
-    public IEnumerable<KeyValuePair<int, Student>> GetAllStudents();
+    public Dictionary<int, Student> GetAllStudents();
     public Student GetStudentById(int studentId);
 
-    public bool ModifyStudent(int studentId, Student student);
+    public void ModifyStudent(int studentId, Student student);
 
-    public bool DeleteStudent(int studentId);
+    public void DeleteStudent(int studentId);
 }

@@ -19,7 +19,7 @@ public class StudentRepository : IStudentRepository
         students.Add(indexOfStudent ++, student);
     }
 
-    public IEnumerable<KeyValuePair<int, Student>> GetAllStudents()
+    public Dictionary<int, Student> GetAllStudents()
     {
         return students;
     }
