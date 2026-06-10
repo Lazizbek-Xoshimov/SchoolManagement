@@ -2,28 +2,21 @@ namespace SchoolManagement.Repositories.Generics;
 
 public class Repository<T> : IRepository<T> where T: class
 {
-    private Dictionary<int, T> data;
-    private int index;
+    private List<T> data;
 
     public Repository()
     {
-        this.data = new Dictionary<int, T>();
-        index = 0;
+        this.data = new List<T>();
     }
 
     public void Create(T value)
     {
-        data.Add(index ++, value);
+        data.Add(value);
     }
 
-    public Dictionary<int, T> GetAll()
+    public List<T> GetAll()
     {
         return data;
-    }
-
-    public T GetById(int id)
-    {
-        return data[id];
     }
 
     public void Update(int id, T value)
@@ -31,8 +24,8 @@ public class Repository<T> : IRepository<T> where T: class
         data[id] = value;
     }
 
-    public void Delete(int id)
+    public void Delete(T value)
     {
-        data.Remove(id);
+        data.Remove(value);
     }
 }

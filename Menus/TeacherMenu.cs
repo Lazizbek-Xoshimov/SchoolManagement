@@ -5,7 +5,12 @@ namespace SchoolManagement.Menus;
 
 public class TeacherMenu
 {
-    ITeacherService teacherService = new TeacherService();
+    private ITeacherService teacherService;
+
+    public TeacherMenu()
+    {
+        this.teacherService = new TeacherService();
+    }
 
     public void ShowOptions()
     {
@@ -26,27 +31,13 @@ public class TeacherMenu
     {
         switch (option)
         {
-            case 1:
-                this.AddRandomTeachersMenu();
-                break;
-            case 2:
-                this.CreateTeacherMenu();
-                break;
-            case 3:
-                this.GetTeacherByIdMenu();
-                break;
-            case 4:
-                this.GetAllTeachersMenu();
-                break;
-            case 5:
-                this.ModifyTeacherMenu();
-                break;
-            case 6:
-                this.DeleteTeacherMenu();
-                break;
-            default:
-                Console.WriteLine("You have selected the wrong section.");
-                break;
+            case 1: AddRandomTeachersMenu(); break;
+            case 2: CreateTeacherMenu(); break;
+            case 3: GetTeacherByIdMenu(); break;
+            case 4: GetAllTeachersMenu(); break;
+            case 5: ModifyTeacherMenu(); break;
+            case 6: DeleteTeacherMenu(); break;
+            default: Console.WriteLine("You have selected the wrong section."); break;
         }
     }
 
