@@ -1,5 +1,5 @@
 using SchoolManagement.Extensions;
-using SchoolManagement.Repositories;
+using SchoolManagement.Repositories.StudentRepositories;
 using SchoolManagement.Models;
 using System.ComponentModel;
 
