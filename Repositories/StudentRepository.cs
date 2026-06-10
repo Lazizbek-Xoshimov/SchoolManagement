@@ -6,7 +6,6 @@ public class StudentRepository : IStudentRepository
 {
     private Dictionary<int, Student> students;
     private int indexOfStudent;
-    private string[] fullNames;
 
     public StudentRepository()
     {

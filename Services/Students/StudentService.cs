@@ -1,27 +1,20 @@
 using SchoolManagement.Extensions;
+using SchoolManagement.Repositories;
 using SchoolManagement.Models;
+using System.ComponentModel;
 
 namespace SchoolManagement.Services.Students;
 
 public class StudentService : IStudentService
 {
-    private Dictionary<int, Student> students = new Dictionary<int, Student>();
-    private int indexOfStudent = 0;
+    private readonly IStudentRepository studentRepository;
+    private string[] fullNames;
 
-    public bool CreateStudent(Student student)
+    public StudentService()
     {
-        if (students.Keys.Contains(student.StudentId))
-            return false;
-        
-        students.Add(indexOfStudent ++, student);
-
-        return true;
-    }
-
-    public void AddRandomStudents()
-    {
-        string[] fullNames = 
-        {
+        studentRepository = new StudentRepository();
+        fullNames = 
+        [
             "Alexander Thompson", 
             "Olivia Martinez",
             "Daniel Robinson",
@@ -32,78 +25,91 @@ public class StudentService : IStudentService
             "Charlotte Young",
             "Christopher Allen",
             "Amelia King"
-        };
+        ];
+    }
+
+    public bool CreateStudent(Student student)
+    {
+        if (studentRepository.GetAllStudents().ContainsKey(student.StudentId))
+            return false;
+        
+        studentRepository.CreateStudent(student);
+        return true;
+    }
+
+    public void AddRandomStudents()
+    {
+        Random random = new Random();
 
         for (int i = 0; i < 10; i ++)
         {
             Student student = new Student();
-            Random random = new Random();
 
-            student.StudentId = indexOfStudent ++;
             student.FullName = fullNames[random.Next(10)];
             student.Age = random.Next(18, 27);
             student.Grade = random.Next(1, 5);
             student.Course = random.Next(1, 5);
 
-            this.CreateStudent(student);
+            studentRepository.CreateStudent(student);
         }
     }
 
     public IEnumerable<IGrouping<int, KeyValuePair<int, Student>>> GetAllStudents()
     {
-        var studentCollection = students.GroupBy(student => student.Value.Course);
+        var studentCollection = studentRepository.GetAllStudents().GroupBy(student => student.Value.Course);
         return studentCollection;
     }
 
     public Student GetStudentById(int studentId)
     {
-        Student returnedStudent = students.ContainsKey(studentId) ? students[studentId] : null;
-        return returnedStudent;
+        if (studentRepository.GetAllStudents().ContainsKey(studentId))
+            return null;
+
+        return studentRepository.GetStudentById(studentId);
     }
 
     public IEnumerable<IGrouping<bool, KeyValuePair<int, Student>>> GetStudentsByName(string name)
     {
-        var returnedStudents = students.GroupBy(student => student.Value.FullName.Contains(name));
-        return returnedStudents;
+        var students = studentRepository.GetAllStudents();
+
+        if (students.Count.Equals(0))
+            return null;
+
+        return studentRepository.GetAllStudents().GroupBy(student => student.Value.FullName.Contains(name));
     }
 
     public IEnumerable<KeyValuePair<int, Student>> GetPaginatedStudents(int page, int pageSize)
     {
-        IEnumerable<KeyValuePair<int, Student>> returnedStudents = students.Paginate(page, pageSize);
-        return returnedStudents;
+        return studentRepository.GetAllStudents().Paginate(page, pageSize);
     }
 
     public int GetStudentsCount()
     {
-        return students.Count();
+        return studentRepository.GetAllStudents().Count();
     }
 
     public bool ModifyStudent(int studentId, Student student)
     {
-        Student modifiedStudent = this.GetStudentById(studentId);
+        if (!studentRepository.GetAllStudents().ContainsKey(studentId))
+            return false;
 
-        if (modifiedStudent is not null)
-        {
-            modifiedStudent.FullName = student.FullName;
-            modifiedStudent.Age = student.Age;
-            modifiedStudent.Course = student.Course;
+        Student modifiedStudent = studentRepository.GetStudentById(studentId);
 
-            return true;
-        }
+        modifiedStudent.FullName = student.FullName;
+        modifiedStudent.Age = student.Age;
+        modifiedStudent.Course = student.Course;
 
-        return false;
+        return true;
     }
 
     public bool DeleteStudent(int studentId)
     {
-        bool isDeleted = false;
+        if (!studentRepository.GetAllStudents().ContainsKey(studentId))
+            return false;
 
-        Student deletedStudent = this.GetStudentById(studentId);
+        studentRepository.DeleteStudent(studentId);
 
-        if (deletedStudent is not null)
-            isDeleted = students.Remove(studentId);
-
-        return isDeleted;
+        return true;
     }
 
     public bool AddStudentRange(params Student[] studentRange)
@@ -121,7 +127,7 @@ public class StudentService : IStudentService
 
         if (isAdded)
         {
-            foreach (var student in students)
+            foreach (var student in studentRepository.GetAllStudents())
             {
                 this.CreateStudent(student.Value);
             }
@@ -131,8 +137,8 @@ public class StudentService : IStudentService
     }
 
     public IDictionary<int, Student> GetCleverStudent() =>
-        students.FindFirstOrDefaultCleverStudent();
+        studentRepository.GetAllStudents().FindFirstOrDefaultCleverStudent();
 
     public IDictionary<int, Student> GetYoungestStudent() =>
-        students.FindFirstOrDefaultYoungestStudent();
+        studentRepository.GetAllStudents().FindFirstOrDefaultYoungestStudent();
 }
