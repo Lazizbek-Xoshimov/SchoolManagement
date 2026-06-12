@@ -29,9 +29,6 @@ public class StudentService : IStudentService
 
     public bool CreateStudent(Student student)
     {
-        if (studentRepository.GetAllStudents().Select(student => student.StudentId).Contains(student.StudentId))
-            return false;
-        
         studentRepository.CreateStudent(student);
         return true;
     }

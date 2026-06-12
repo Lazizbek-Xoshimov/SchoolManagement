@@ -59,7 +59,7 @@ public class StudentMenu
     {
         Student student = new Student();
 
-        Console.WriteLine($"Enter student's details.");
+        Console.WriteLine($"Enter student's details."); 
         Console.Write("Enter student's full name: ");
         student.FullName = Console.ReadLine();
 
