@@ -1,40 +1,61 @@
+using System.Text.Json;
 using SchoolManagement.Models;
 
 namespace SchoolManagement.Repositories.StudentRepositories;
 
 public class StudentRepository : IStudentRepository
 {
-    private Dictionary<int, Student> students;
-    private int indexOfStudent;
+    private string path;
+    private string content;
+    private List<Student> students;
+    private int studentId;
 
     public StudentRepository()
     {
-        this.students = new Dictionary<int, Student>();
-        indexOfStudent = 0;
+        path = @"Data\students.json";
+        content = File.ReadAllText(path);
+        students = JsonSerializer.Deserialize<List<Student>>(content);
+
+        studentId = students.Count;
     }
 
     public void CreateStudent(Student student)
     {
-        students.Add(indexOfStudent ++, student);
+        student.StudentId = studentId ++;
+        students.Add(student);
+        
+        string data = JsonSerializer.Serialize(students, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText(path, data);
     }
 
-    public Dictionary<int, Student> GetAllStudents()
+    public List<Student> GetAllStudents()
     {
         return students;
     }
 
     public Student GetStudentById(int studentId)
     {
-        return students[studentId];
+        return students.FirstOrDefault(student => student.StudentId.Equals(studentId));
     }
 
     public void ModifyStudent(int studentId, Student student)
     {
-        students[studentId] = student;
+        Student modifiedStudent = GetStudentById(studentId);
+        int indexOfStudent = students.IndexOf(modifiedStudent);
+        students.RemoveAt(indexOfStudent);
+
+        students.Insert(indexOfStudent, student);
+
+        string data = JsonSerializer.Serialize(students, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText(path, data);
     }
 
     public void DeleteStudent(int studentId)
     {
-        students.Remove(studentId);
+        Student deletedStudent = GetStudentById(studentId);
+        students.Remove(deletedStudent);
+
+        string data = JsonSerializer.Serialize(students, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText(path, data);
     }
 }

@@ -6,7 +6,7 @@ public interface IStudentRepository
 {
     public void CreateStudent(Student student);
 
-    public Dictionary<int, Student> GetAllStudents();
+    public List<Student> GetAllStudents();
     public Student GetStudentById(int studentId);
 
     public void ModifyStudent(int studentId, Student student);

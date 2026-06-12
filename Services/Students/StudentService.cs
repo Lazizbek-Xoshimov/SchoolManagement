@@ -1,7 +1,6 @@
 using SchoolManagement.Extensions;
 using SchoolManagement.Repositories.StudentRepositories;
 using SchoolManagement.Models;
-using System.ComponentModel;
 
 namespace SchoolManagement.Services.Students;
 
@@ -30,7 +29,7 @@ public class StudentService : IStudentService
 
     public bool CreateStudent(Student student)
     {
-        if (studentRepository.GetAllStudents().ContainsKey(student.StudentId))
+        if (studentRepository.GetAllStudents().Select(student => student.StudentId).Contains(student.StudentId))
             return false;
         
         studentRepository.CreateStudent(student);
@@ -54,31 +53,31 @@ public class StudentService : IStudentService
         }
     }
 
-    public IEnumerable<IGrouping<int, KeyValuePair<int, Student>>> GetAllStudents()
+    public IEnumerable<IGrouping<int, Student>> GetAllStudents()
     {
-        var studentCollection = studentRepository.GetAllStudents().GroupBy(student => student.Value.Course);
+        var studentCollection = studentRepository.GetAllStudents().GroupBy(student => student.Course);
         return studentCollection;
     }
 
     public Student GetStudentById(int studentId)
     {
-        if (studentRepository.GetAllStudents().ContainsKey(studentId))
+        if (!studentRepository.GetAllStudents().Select(student => student.StudentId).Contains(studentId))
             return null;
 
         return studentRepository.GetStudentById(studentId);
     }
 
-    public IEnumerable<IGrouping<bool, KeyValuePair<int, Student>>> GetStudentsByName(string name)
+    public IEnumerable<IGrouping<bool, Student>> GetStudentsByName(string name)
     {
         var students = studentRepository.GetAllStudents();
 
         if (students.Count.Equals(0))
             return null;
 
-        return studentRepository.GetAllStudents().GroupBy(student => student.Value.FullName.Contains(name));
+        return studentRepository.GetAllStudents().GroupBy(student => student.FullName.Contains(name));
     }
 
-    public IEnumerable<KeyValuePair<int, Student>> GetPaginatedStudents(int page, int pageSize)
+    public IEnumerable<Student> GetPaginatedStudents(int page, int pageSize)
     {
         return studentRepository.GetAllStudents().Paginate(page, pageSize);
     }
@@ -90,7 +89,7 @@ public class StudentService : IStudentService
 
     public bool ModifyStudent(int studentId, Student student)
     {
-        if (!studentRepository.GetAllStudents().ContainsKey(studentId))
+        if (!studentRepository.GetAllStudents().Select(student => student.StudentId).Contains(studentId))
             return false;
 
         Student modifiedStudent = studentRepository.GetStudentById(studentId);
@@ -99,12 +98,14 @@ public class StudentService : IStudentService
         modifiedStudent.Age = student.Age;
         modifiedStudent.Course = student.Course;
 
+        studentRepository.ModifyStudent(studentId, modifiedStudent);
+
         return true;
     }
 
     public bool DeleteStudent(int studentId)
     {
-        if (!studentRepository.GetAllStudents().ContainsKey(studentId))
+        if (!studentRepository.GetAllStudents().Select(student => student.StudentId).Contains(studentId))
             return false;
 
         studentRepository.DeleteStudent(studentId);
@@ -113,27 +114,20 @@ public class StudentService : IStudentService
     }
 
     public bool AddStudentRange(params Student[] studentRange)
-    {
-        bool isAdded = true;
-        
-        for(int i = 0; i < studentRange.Length; i++)
+    {        
+        Student sameStudent = studentRange.Aggregate((first, second) => first.StudentId.Equals(second.StudentId) ? first : null);
+
+        if (sameStudent is not null)
         {
-            for (int j = i; j < studentRange.Length - 1; j++)
-            {
-                if (studentRange[i].StudentId == studentRange[j + 1].StudentId)
-                    isAdded = false;
-            }
+            return false;   
         }
 
-        if (isAdded)
+        foreach (var student in studentRepository.GetAllStudents())
         {
-            foreach (var student in studentRepository.GetAllStudents())
-            {
-                this.CreateStudent(student.Value);
-            }
+            CreateStudent(student);
         }
-            
-        return isAdded;
+
+        return true;  
     }
 
     public IDictionary<int, Student> GetCleverStudent() =>

@@ -87,15 +87,15 @@ public class StudentMenu
         if (studentCollection.Count() == 0)
             Console.WriteLine("The database is empty.");
 
-        foreach(IGrouping<int, KeyValuePair<int, Student>> students in studentCollection)
+        foreach(var students in studentCollection)
         {
             Console.WriteLine($"Students in {students.Key} course: ");
-            foreach(KeyValuePair<int, Student> student in students)
+            foreach(var student in students)
             {
-                Console.WriteLine($"StudentId: {student.Value.StudentId}");
-                Console.WriteLine($"Student full name: {student.Value.FullName}");
-                Console.WriteLine($"Student age: {student.Value.Age}");
-                Console.WriteLine($"Student grade: {student.Value.Grade}");
+                Console.WriteLine($"StudentId: {student.StudentId}");
+                Console.WriteLine($"Student full name: {student.FullName}");
+                Console.WriteLine($"Student age: {student.Age}");
+                Console.WriteLine($"Student grade: {student.Grade}");
             }
             Console.WriteLine();
         }
@@ -178,11 +178,11 @@ public class StudentMenu
                 Console.WriteLine($"Students named {name}:");
                 foreach (var student in students)
                 {
-                    Console.WriteLine($"StudentId: {student.Value.StudentId}");
-                    Console.WriteLine($"Student full name: {student.Value.FullName}");
-                    Console.WriteLine($"Student age: {student.Value.Age}");
-                    Console.WriteLine($"Student grade: {student.Value.Grade}");
-                    Console.WriteLine($"Student course: {student.Value.Course}");
+                    Console.WriteLine($"StudentId: {student.StudentId}");
+                    Console.WriteLine($"Student full name: {student.FullName}");
+                    Console.WriteLine($"Student age: {student.Age}");
+                    Console.WriteLine($"Student grade: {student.Grade}");
+                    Console.WriteLine($"Student course: {student.Course}");
                     Console.WriteLine();
                 }
             }
@@ -200,7 +200,7 @@ public class StudentMenu
         Console.Write("Enter the page size: ");
         int pageSize = int.Parse(Console.ReadLine());
 
-        IEnumerable<KeyValuePair<int, Student>> students = studentService.GetPaginatedStudents(page, pageSize);
+        var students = studentService.GetPaginatedStudents(page, pageSize);
         
         if (students.Count() == 0)
             Console.WriteLine($"{page} page not found.");
@@ -208,11 +208,11 @@ public class StudentMenu
         {
             foreach (var student in students)
             {
-                Console.WriteLine($"StudentId: {student.Value.StudentId}");
-                Console.WriteLine($"Student full name: {student.Value.FullName}");
-                Console.WriteLine($"Student age: {student.Value.Age}");
-                Console.WriteLine($"Student grade: {student.Value.Grade}");
-                Console.WriteLine($"Student course: {student.Value.Course}");
+                Console.WriteLine($"StudentId: {student.StudentId}");
+                Console.WriteLine($"Student full name: {student.FullName}");
+                Console.WriteLine($"Student age: {student.Age}");
+                Console.WriteLine($"Student grade: {student.Grade}");
+                Console.WriteLine($"Student course: {student.Course}");
             }
         }
     }

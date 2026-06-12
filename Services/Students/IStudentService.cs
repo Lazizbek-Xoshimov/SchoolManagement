@@ -8,10 +8,10 @@ public interface IStudentService
     public void AddRandomStudents();
     public bool AddStudentRange(params Student[] studentsRange);
 
-    public IEnumerable<IGrouping<int, KeyValuePair<int, Student>>> GetAllStudents();
+    public IEnumerable<IGrouping<int, Student>> GetAllStudents();
     public Student GetStudentById(int studentId);
-    public IEnumerable<IGrouping<bool, KeyValuePair<int, Student>>> GetStudentsByName(string name);
-    public IEnumerable<KeyValuePair<int, Student>> GetPaginatedStudents(int page, int pageSize);
+    public IEnumerable<IGrouping<bool, Student>> GetStudentsByName(string name);
+    public IEnumerable<Student> GetPaginatedStudents(int page, int pageSize);
     public int GetStudentsCount();
     public IDictionary<int, Student> GetCleverStudent();
     public IDictionary<int, Student> GetYoungestStudent();
