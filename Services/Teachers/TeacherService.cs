@@ -37,7 +37,7 @@ public class TeacherService : ITeacherService
             "Geography",
             "Computer Science",
             "Physical Education",
-            "Art & Design"
+            "Art and Design"
         ];
     }
     public void AddRandomTeachers()

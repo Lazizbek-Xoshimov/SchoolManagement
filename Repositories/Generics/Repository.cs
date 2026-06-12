@@ -40,6 +40,7 @@ public class Repository<T> : IRepository<T> where T: Teacher
 
     public void Update(int id, T value)
     {
+        value.TeacherId = id;
         objects[id] = value;
 
         string data = JsonSerializer.Serialize(objects, new JsonSerializerOptions { WriteIndented = true });
