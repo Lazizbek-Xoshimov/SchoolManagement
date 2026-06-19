@@ -1,4 +1,5 @@
 using System.Text.Json;
+using SchoolManagement.Managers;
 using SchoolManagement.Models;
 
 namespace SchoolManagement.Repositories.StudentRepositories;
@@ -21,11 +22,13 @@ public class StudentRepository : IStudentRepository
 
     public void CreateStudent(Student student)
     {
+        using StudentFileManager manager = new StudentFileManager(path);
+
         student.StudentId = creationStudentId ++;
         students.Add(student);
         
         string data = JsonSerializer.Serialize(students, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(path, data);
+        manager.Add(data);
     }
 
     public List<Student> GetAllStudents()
@@ -40,6 +43,8 @@ public class StudentRepository : IStudentRepository
 
     public void ModifyStudent(int studentId, Student student)
     {
+        using StudentFileManager manager = new StudentFileManager(path);
+        
         Student modifiedStudent = GetStudentById(studentId);
         int indexOfStudent = students.IndexOf(modifiedStudent);
         students.RemoveAt(indexOfStudent);
@@ -47,15 +52,17 @@ public class StudentRepository : IStudentRepository
         students.Insert(indexOfStudent, student);
 
         string data = JsonSerializer.Serialize(students, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(path, data);
+        manager.Add(data);
     }
 
     public void DeleteStudent(int studentId)
     {
+        using StudentFileManager manager = new StudentFileManager(path);
+
         Student deletedStudent = GetStudentById(studentId);
         students.Remove(deletedStudent);
 
         string data = JsonSerializer.Serialize(students, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(path, data);
+        manager.Add(data);
     }
 }
