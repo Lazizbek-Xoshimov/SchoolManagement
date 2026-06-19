@@ -1,17 +1,20 @@
 using SchoolManagement.Extensions;
 using SchoolManagement.Repositories.StudentRepositories;
 using SchoolManagement.Models;
+using SchoolManagement.Services.LogServices;
 
 namespace SchoolManagement.Services.Students;
 
 public class StudentService : IStudentService
 {
     private readonly IStudentRepository studentRepository;
+    private ILoggingService logging;
     private string[] fullNames;
 
     public StudentService()
     {
         studentRepository = new StudentRepository();
+        logging = new LoggingService();
         fullNames = 
         [
             "Alexander Thompson", 
@@ -30,6 +33,7 @@ public class StudentService : IStudentService
     public bool CreateStudent(Student student)
     {
         studentRepository.CreateStudent(student);
+        logging.WriteLogs($"{student.StudentId} ID student added to students.json file");
         return true;
     }
 
@@ -46,7 +50,7 @@ public class StudentService : IStudentService
             student.Grade = random.Next(1, 5);
             student.Course = random.Next(1, 5);
 
-            studentRepository.CreateStudent(student);
+            CreateStudent(student);
         }
     }
 
@@ -96,6 +100,7 @@ public class StudentService : IStudentService
         modifiedStudent.Course = student.Course;
 
         studentRepository.ModifyStudent(studentId, modifiedStudent);
+        logging.WriteLogs($"{studentId} ID student updated");
 
         return true;
     }
@@ -106,6 +111,7 @@ public class StudentService : IStudentService
             return false;
 
         studentRepository.DeleteStudent(studentId);
+        logging.WriteLogs($"{studentId} ID student deleted from students.json file");
 
         return true;
     }
