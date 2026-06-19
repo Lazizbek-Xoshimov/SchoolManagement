@@ -1,11 +1,13 @@
 using SchoolManagement.Models;
 using SchoolManagement.Repositories.Generics;
+using SchoolManagement.Services.LogServices;
 
 namespace SchoolManagement.Services.Teachers;
 
 public class TeacherService : ITeacherService
 {
     private IRepository<Teacher> teacherRepository;
+    private ILoggingService logging;
     private string[] teacherFullNames;
     private string[] teacherSubjects;
     Random randomString = new Random();
@@ -13,6 +15,7 @@ public class TeacherService : ITeacherService
     public TeacherService()
     {
         this.teacherRepository = new Repository<Teacher>();
+        this.logging = new LoggingService();
         this.teacherFullNames =
         [
             "James Anderson",
@@ -61,6 +64,7 @@ public class TeacherService : ITeacherService
             return false;
 
         teacherRepository.Create(teacher);
+        logging.WriteLogs($"{teacher.TeacherId} ID teacher added to teachers.json file");
 
         return true;
     }
@@ -84,6 +88,7 @@ public class TeacherService : ITeacherService
             return false;
 
         teacherRepository.Update(teacherId, teacher);
+        logging.WriteLogs($"{teacher.TeacherId} ID teacher updated");
         return true;
     }
 
@@ -96,6 +101,7 @@ public class TeacherService : ITeacherService
 
         Teacher teacher = teachers.FirstOrDefault(teacher => teacher.TeacherId == teacherId);
         teacherRepository.Delete(teacher);
+        logging.WriteLogs($"{teacher.TeacherId} ID teacher deleted");
             
         return true;
     }
