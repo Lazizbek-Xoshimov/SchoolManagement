@@ -58,11 +58,8 @@ public class BaseMenu
 
                 break;   
             }
-            case 0:
-                break;
-            default:
-                Console.WriteLine("You have selected the wrong section.");
-                break;
+            case 0: break;
+            default: Console.WriteLine("You have selected the wrong section."); break;
         }
     }
 }

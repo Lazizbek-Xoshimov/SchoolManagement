@@ -72,22 +72,13 @@ public class StudentMenu
         Console.Write("Enter the student's grade: ");
         student.Grade = int.Parse(Console.ReadLine());
 
-        bool isAdded = studentService.CreateStudent(student);
-
-        if (isAdded)
-            Console.WriteLine("Data added to the database.");
-        else 
-            Console.WriteLine("Data not added to database. There is a student with this ID in the database.");
+        studentService.CreateStudent(student);
+        Console.WriteLine("Data added to the database.");
     }
 
     public void GetAllStudentsMenu()
     {
-        var studentCollection = studentService.GetAllStudents();
-
-        if (studentCollection.Count() == 0)
-            Console.WriteLine("The database is empty.");
-
-        foreach(var students in studentCollection)
+        foreach(var students in studentService.GetAllStudents())
         {
             Console.WriteLine($"Students in {students.Key} course: ");
             foreach(var student in students)
@@ -108,16 +99,11 @@ public class StudentMenu
 
         Student student = studentService.GetStudentById(studentId);
 
-        if (student is null)
-            Console.WriteLine($"No student with ID {studentId} found.");
-        else
-        {
-            Console.WriteLine($"StudentId: {student.StudentId}");
-            Console.WriteLine($"Student full name: {student.FullName}");
-            Console.WriteLine($"Student age: {student.Age}");
-            Console.WriteLine($"Student grade: {student.Grade}");
-            Console.WriteLine($"Student course: {student.Course}");
-        }
+        Console.WriteLine($"StudentId: {student.StudentId}");
+        Console.WriteLine($"Student full name: {student.FullName}");
+        Console.WriteLine($"Student age: {student.Age}");
+        Console.WriteLine($"Student grade: {student.Grade}");
+        Console.WriteLine($"Student course: {student.Course}");
     }
 
     public void ModifyStudentMenu()
@@ -139,25 +125,17 @@ public class StudentMenu
         Console.Write("Enter student's grade: ");
         student.Grade = int.Parse(Console.ReadLine());
 
-        bool isModified = studentService.ModifyStudent(studentId, student);
-
-        if (isModified)
-            Console.WriteLine($"Student data in index {studentId} has been changed.");
-        else
-            Console.WriteLine($"No student with this {studentId} was found.");
+        studentService.ModifyStudent(studentId, student);
+        Console.WriteLine($"Student data in index {studentId} has been changed.");
     }
 
     public void DeleteStudentMenu()
     {
         Console.Write("Enter the student ID to be deleted: ");
         int studentId = int.Parse(Console.ReadLine());
-
-        bool isDeleted = studentService.DeleteStudent(studentId);
-
-        if (isDeleted)
-            Console.WriteLine($"Student information in {studentId} ID has been deleted.");
-        else
-            Console.WriteLine($"No student with this {studentId} was found.");
+        
+        studentService.DeleteStudent(studentId);
+        Console.WriteLine($"Student information in {studentId} ID has been deleted.");
     }
 
     public void GetStudentsByNameMenu()
@@ -165,16 +143,12 @@ public class StudentMenu
         Console.Write("Enter the name of student you are looking for: ");
         string name = Console.ReadLine();
 
-        bool isThere = false;
-
         var studentCollection = studentService.GetStudentsByName(name);
 
         foreach(var students in studentCollection)
         {
             if (students.Key is true)
             {
-                isThere = true;
-
                 Console.WriteLine($"Students named {name}:");
                 foreach (var student in students)
                 {
@@ -187,9 +161,6 @@ public class StudentMenu
                 }
             }
         }
-
-        if (isThere is false)
-            Console.WriteLine($"There are no students named {name}");
     }
 
     public void GetPaginatedStudentsMenu()
@@ -202,29 +173,20 @@ public class StudentMenu
 
         var students = studentService.GetPaginatedStudents(page, pageSize);
         
-        if (students.Count() == 0)
-            Console.WriteLine($"{page} page not found.");
-        else
+        foreach (var student in students)
         {
-            foreach (var student in students)
-            {
-                Console.WriteLine($"StudentId: {student.StudentId}");
-                Console.WriteLine($"Student full name: {student.FullName}");
-                Console.WriteLine($"Student age: {student.Age}");
-                Console.WriteLine($"Student grade: {student.Grade}");
-                Console.WriteLine($"Student course: {student.Course}");
-            }
+            Console.WriteLine($"StudentId: {student.StudentId}");
+            Console.WriteLine($"Student full name: {student.FullName}");
+            Console.WriteLine($"Student age: {student.Age}");
+            Console.WriteLine($"Student grade: {student.Grade}");
+            Console.WriteLine($"Student course: {student.Course}");
         }
     }
 
     public void GetStudentsCountMenu()
     {
         int studentsCount = studentService.GetStudentsCount();
-
-        if (studentsCount == 0)
-            Console.WriteLine("The database is empty.");
-        else 
-            Console.WriteLine($"There are {studentsCount} students in the database.");
+        Console.WriteLine($"There are {studentsCount} students in the database.");
     }
 
     public void AddStudentRangeMenu()
@@ -259,41 +221,23 @@ public class StudentMenu
             wantAdd = Console.ReadLine();
         } while (wantAdd.Equals("yes"));
 
-        bool isAdded = studentService.AddStudentRange(studentRange.ToArray());
-
-        if (isAdded)
-            Console.WriteLine("Students have been added to the database.");
-        else
-            Console.WriteLine("Student's ID will not be the same.");
+        studentService.AddStudentRange(studentRange.ToArray());
+        Console.WriteLine("Students have been added to the database.");
     }
 
     public void GetCleverStudentMenu()
     {
-        var cleverStudentOnCourse = studentService.GetCleverStudent();
-
-        if (cleverStudentOnCourse.Count.Equals(0))
-            Console.WriteLine("The database is empty.");
-        else
+        foreach (var room in studentService.GetCleverStudent())
         {
-            foreach (var room in cleverStudentOnCourse)
-            {
-                Console.WriteLine($"{room.Value.FullName} is a clever in {room.Key} course.");
-            }
+            Console.WriteLine($"{room.Value.FullName} is a clever in {room.Key} course.");
         }
     }
 
     public void GetYoungestStudentMenu()
     {
-        var youngestStudentOnCourse = studentService.GetYoungestStudent();
-
-        if (youngestStudentOnCourse.Count.Equals(0))
-            Console.WriteLine("The database is empty.");
-        else
+        foreach (var room in studentService.GetYoungestStudent())
         {
-            foreach (var room in youngestStudentOnCourse)
-            {
-                Console.WriteLine($"{room.Value.FullName} is a youngest in {room.Key} course.");
-            }
+            Console.WriteLine($"{room.Value.FullName} is a youngest in {room.Key} course.");
         }
     }
 }
