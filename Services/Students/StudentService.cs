@@ -33,9 +33,6 @@ public class StudentService : IStudentService
 
     public void CreateStudent(Student student)
     {
-        if (studentRepository.GetAllStudents().Select(eachStudent => eachStudent.StudentId).Contains(student.StudentId))
-            throw new ValidationException("Student id shouldn't be the same.");
-
         studentRepository.CreateStudent(student);
         logging.WriteLogs($"{student.StudentId} ID student added to students.json file");
     }
