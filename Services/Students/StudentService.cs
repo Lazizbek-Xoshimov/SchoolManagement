@@ -2,6 +2,7 @@ using SchoolManagement.Extensions;
 using SchoolManagement.Repositories.StudentRepositories;
 using SchoolManagement.Models;
 using SchoolManagement.Services.LogServices;
+using SchoolManagement.Exceptions;
 
 namespace SchoolManagement.Services.Students;
 
@@ -30,11 +31,13 @@ public class StudentService : IStudentService
         ];
     }
 
-    public bool CreateStudent(Student student)
+    public void CreateStudent(Student student)
     {
+        if (studentRepository.GetAllStudents().Select(eachStudent => eachStudent.StudentId).Contains(student.StudentId))
+            throw new ValidationException("Student id shouldn't be the same.");
+
         studentRepository.CreateStudent(student);
         logging.WriteLogs($"{student.StudentId} ID student added to students.json file");
-        return true;
     }
 
     public void AddRandomStudents()
@@ -57,41 +60,61 @@ public class StudentService : IStudentService
     public IEnumerable<IGrouping<int, Student>> GetAllStudents()
     {
         var studentCollection = studentRepository.GetAllStudents().GroupBy(student => student.Course);
+
+        if (studentCollection.Count().Equals(0))
+            throw new NotFoundException("Database is empty.");
+
         return studentCollection;
     }
 
     public Student GetStudentById(int studentId)
     {
         if (!studentRepository.GetAllStudents().Select(student => student.StudentId).Contains(studentId))
-            return null;
+            throw new NotFoundException("Student is not found.");
 
         return studentRepository.GetStudentById(studentId);
     }
 
     public IEnumerable<IGrouping<bool, Student>> GetStudentsByName(string name)
     {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ValidationException("Name must not be empty.");
+
         var students = studentRepository.GetAllStudents();
 
         if (students.Count.Equals(0))
-            return null;
+            throw new NotFoundException("Database is empty.");
+
+        if (!students.Select(student => student.FullName).Contains(name))
+            throw new NotFoundException("Students are not found.");
 
         return studentRepository.GetAllStudents().GroupBy(student => student.FullName.Contains(name));
     }
 
     public IEnumerable<Student> GetPaginatedStudents(int page, int pageSize)
     {
-        return studentRepository.GetAllStudents().Paginate(page, pageSize);
+        var students = studentRepository.GetAllStudents();
+
+        if (students.Count().Equals(0))
+            throw new NotFoundException("Database is empty.");
+
+        return students.Paginate(page, pageSize);
     }
 
     public int GetStudentsCount()
     {
-        return studentRepository.GetAllStudents().Count();
+        var studentCount = studentRepository.GetAllStudents().Count();
+        
+        if (studentCount.Equals(0))
+            throw new NotFoundException("Database is empty");
+
+        return studentCount;
     }
 
-    public bool ModifyStudent(int studentId, Student student)
+    public void ModifyStudent(int studentId, Student student)
     {
         if (!studentRepository.GetAllStudents().Select(student => student.StudentId).Contains(studentId))
-            return false;
+            throw new NotFoundException("Student is not found.");
 
         Student modifiedStudent = studentRepository.GetStudentById(studentId);
 
@@ -99,43 +122,55 @@ public class StudentService : IStudentService
         modifiedStudent.Age = student.Age;
         modifiedStudent.Course = student.Course;
 
+        if (string.IsNullOrWhiteSpace(modifiedStudent.FullName))
+            throw new ValidationException("Full Name must not be empty."); 
+
         studentRepository.ModifyStudent(studentId, modifiedStudent);
         logging.WriteLogs($"{studentId} ID student updated");
-
-        return true;
     }
 
-    public bool DeleteStudent(int studentId)
+    public void DeleteStudent(int studentId)
     {
         if (!studentRepository.GetAllStudents().Select(student => student.StudentId).Contains(studentId))
-            return false;
+            throw new NotFoundException("Student is not found.");
 
         studentRepository.DeleteStudent(studentId);
         logging.WriteLogs($"{studentId} ID student deleted from students.json file");
-
-        return true;
     }
 
-    public bool AddStudentRange(params Student[] studentRange)
+    public void AddStudentRange(params Student[] studentRange)
     {        
+        if (studentRange.Count().Equals(0))
+            throw new ValidationException("Student range must not be empty.");
+
         Student sameStudent = studentRange.Aggregate((first, second) => first.StudentId.Equals(second.StudentId) ? first : null);
 
         if (sameStudent is not null)
-        {
-            return false;   
-        }
+            throw new ValidationException("Student id shouldn't be the same.");
 
         foreach (var student in studentRepository.GetAllStudents())
         {
             CreateStudent(student);
         }
-
-        return true;  
     }
 
-    public IDictionary<int, Student> GetCleverStudent() =>
-        studentRepository.GetAllStudents().FindFirstOrDefaultCleverStudent();
+    public IDictionary<int, Student> GetCleverStudent()
+    {
+        var students = studentRepository.GetAllStudents();
 
-    public IDictionary<int, Student> GetYoungestStudent() =>
-        studentRepository.GetAllStudents().FindFirstOrDefaultYoungestStudent();
+        if (students.Count().Equals(0))
+            throw new NotFoundException("Database is empty.");
+
+        return students.FindFirstOrDefaultCleverStudent();
+    }
+
+    public IDictionary<int, Student> GetYoungestStudent()
+    {
+        var students = studentRepository.GetAllStudents();
+
+        if (students.Count().Equals(0))
+            throw new NotFoundException("Database is empty.");
+
+        return students.FindFirstOrDefaultYoungestStudent();
+    }
 }

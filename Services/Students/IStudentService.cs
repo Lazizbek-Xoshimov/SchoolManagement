@@ -4,9 +4,9 @@ namespace SchoolManagement.Services.Students;
 
 public interface IStudentService
 {
-    public bool CreateStudent(Student student);
+    public void CreateStudent(Student student);
     public void AddRandomStudents();
-    public bool AddStudentRange(params Student[] studentsRange);
+    public void AddStudentRange(params Student[] studentsRange);
 
     public IEnumerable<IGrouping<int, Student>> GetAllStudents();
     public Student GetStudentById(int studentId);
@@ -16,7 +16,7 @@ public interface IStudentService
     public IDictionary<int, Student> GetCleverStudent();
     public IDictionary<int, Student> GetYoungestStudent();
 
-    public bool ModifyStudent(int studentId, Student student);
+    public void ModifyStudent(int studentId, Student student);
 
-    public bool DeleteStudent(int studentId);
+    public void DeleteStudent(int studentId);
 }
