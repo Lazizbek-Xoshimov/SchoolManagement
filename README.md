@@ -29,7 +29,7 @@ Performing CRUD operations on Teacher and Student lists
 ## 🧑‍💻 I worked on it
 - *OOP princples: Abstraction, Encapsulation, Inheritance, Polymorphism*
 - *Elements of OOP: classes, objects, interfaces, Generic methods*
-- *Classes: Console, Random, Enumerable, JsonSerializer, File, user-defined classes*
+- *Classes: Console, Random, Enumerable, JsonSerializer, File, Exception, user-defined classes*
 - *Data types: int, string, bool, DateTime*
 - *Access modifiers: public, private*
 - *Collections: Array, List\<T>, Dictionary\<TKey, TValue>*
