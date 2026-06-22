@@ -57,12 +57,8 @@ public class TeacherMenu
         Console.Write("Enter which subject teacher: ");
         teacher.Subject = Console.ReadLine();
 
-        bool isAdded = teacherService.CreateTeacher(teacher);
-
-        if (isAdded)
-            Console.WriteLine("Teacher added to the database.");
-        else
-            Console.WriteLine("This is available in the teacher database.");
+        teacherService.CreateTeacher(teacher);
+        Console.WriteLine("Teacher added to the database.");
     }
 
     public void GetTeacherByIdMenu()
@@ -72,30 +68,20 @@ public class TeacherMenu
 
         Teacher teacher = teacherService.GetTeacherById(teacherId);
 
-        if (teacher is null)
-            Console.WriteLine($"Teacher with ID {teacherId} not found.");
-        else
-        {
-            Console.WriteLine($"Teacher's ID: {teacher.TeacherId}");
-            Console.WriteLine($"Teacher's full name: {teacher.FullName}");
-            Console.WriteLine($"Teacher's subject: {teacher.Subject}");
-        }
+        Console.WriteLine($"Teacher's ID: {teacher.TeacherId}");
+        Console.WriteLine($"Teacher's full name: {teacher.FullName}");
+        Console.WriteLine($"Teacher's subject: {teacher.Subject}");
     }
 
     public void GetAllTeachersMenu()
     {
         List<Teacher> teachers = teacherService.GetAllTeachers();
 
-        if (teachers.Count == 0)
-            Console.WriteLine("The database is empty.");
-        else
+        foreach (Teacher teacher in teachers)
         {
-            foreach (Teacher teacher in teachers)
-            {
-                Console.WriteLine($"Teacher's ID: {teacher.TeacherId}");
-                Console.WriteLine($"Teacher's full name: {teacher.FullName}");
-                Console.WriteLine($"Teacher's subject: {teacher.Subject}");
-            }
+            Console.WriteLine($"Teacher's ID: {teacher.TeacherId}");
+            Console.WriteLine($"Teacher's full name: {teacher.FullName}");
+            Console.WriteLine($"Teacher's subject: {teacher.Subject}");
         }
     }
 
@@ -112,12 +98,8 @@ public class TeacherMenu
         Console.Write("Enter which subject teacher: ");
         teacher.Subject = Console.ReadLine();
 
-        bool isModified = teacherService.ModifyTeacher(teacherId, teacher);
-
-        if (isModified)
-            Console.WriteLine($"The teacher's information on ID {teacherId} has been changed.");
-        else 
-            Console.WriteLine($"Teacher with ID {teacherId} not found.");
+        teacherService.ModifyTeacher(teacherId, teacher);
+        Console.WriteLine($"The teacher's information on ID {teacherId} has been changed.");
     }
 
     public void DeleteTeacherMenu()
@@ -125,11 +107,7 @@ public class TeacherMenu
         Console.Write("Enter the teacher ID to be deleted: ");
         int teacherId = int.Parse(Console.ReadLine());
 
-        bool isDeleted = teacherService.DeleteTeacher(teacherId);
-
-        if (isDeleted)
-            Console.WriteLine($"Teacher data with ID {teacherId} has been deleted.");
-        else
-            Console.WriteLine($"Teacher with ID {teacherId} not found.");
+        teacherService.DeleteTeacher(teacherId);
+        Console.WriteLine($"Teacher data with ID {teacherId} has been deleted.");
     }
 }

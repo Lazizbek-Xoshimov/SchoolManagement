@@ -1,3 +1,4 @@
+using SchoolManagement.Exceptions;
 using SchoolManagement.Models;
 using SchoolManagement.Repositories.Generics;
 using SchoolManagement.Services.LogServices;
@@ -56,53 +57,64 @@ public class TeacherService : ITeacherService
         }
     }
 
-    public bool CreateTeacher(Teacher teacher)
+    public void CreateTeacher(Teacher teacher)
     {
         teacher.TeacherId = teacherRepository.GetAll().Count;
 
         if (teacherRepository.GetAll().Select(selectTeacher => selectTeacher.TeacherId).Contains(teacher.TeacherId))
-            return false;
+            throw new NotFoundException("Database is empty.");
 
         teacherRepository.Create(teacher);
         logging.WriteLogs($"{teacher.TeacherId} ID teacher added to teachers.json file");
-
-        return true;
     }
 
     public Teacher GetTeacherById(int teacherId)
     {
-        Teacher teacher = teacherRepository.GetAll().FirstOrDefault(teacher => teacher.TeacherId == teacherId);
+        var teacher = teacherRepository.GetAll().FirstOrDefault(teacher => teacher.TeacherId == teacherId);
+        
+        if (teacher is null)
+            throw new NotFoundException("Teacher is not found.");
+
         return teacher;
     }
 
     public List<Teacher> GetAllTeachers()
     {
+        var teachers = teacherRepository.GetAll();
+
+        if (teachers.Count().Equals(0)) 
+            throw new NotFoundException("Database is empty.");
+
         return teacherRepository.GetAll();
     }
 
-    public bool ModifyTeacher(int teacherId, Teacher teacher)
+    public void ModifyTeacher(int teacherId, Teacher teacher)
     {
         var teachers = teacherRepository.GetAll();
 
+        if (teachers.Count().Equals(0)) 
+            throw new NotFoundException("Database is empty.");
+
         if (!teachers.Select(selectTeacher => selectTeacher.TeacherId).Contains(teacherId))
-            return false;
+            throw new NotFoundException("Teacher is not found.");
 
         teacherRepository.Update(teacherId, teacher);
         logging.WriteLogs($"{teacher.TeacherId} ID teacher updated");
-        return true;
     }
 
-    public bool DeleteTeacher(int teacherId)
+    public void DeleteTeacher(int teacherId)
     {
         var teachers = teacherRepository.GetAll();
-        
-        if (!teachers.Select(selectTeacher => selectTeacher.TeacherId).Contains(teacherId))
-            return false;
 
+        if (teachers.Count().Equals(0)) 
+            throw new NotFoundException("Database is empty.");
+        
         Teacher teacher = teachers.FirstOrDefault(teacher => teacher.TeacherId == teacherId);
+
+        if (teacher is null)
+            throw new NotFoundException("Teaecher is not found.");
+
         teacherRepository.Delete(teacher);
-        logging.WriteLogs($"{teacher.TeacherId} ID teacher deleted");
-            
-        return true;
+        logging.WriteLogs($"{teacher.TeacherId} ID teacher deleted");            
     }
 }
