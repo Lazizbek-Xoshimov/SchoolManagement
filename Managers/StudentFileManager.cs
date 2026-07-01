@@ -11,9 +11,9 @@ public class StudentFileManager : IDisposable
         writer = new StreamWriter(path);
     }
 
-    public void Add(string data)
+    public async Task AddAsync(string data)
     {
-        writer.WriteLine(data);
+        await writer.WriteLineAsync(data);
     }
 
     public void Dispose()

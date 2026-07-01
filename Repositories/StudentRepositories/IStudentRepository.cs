@@ -4,12 +4,12 @@ namespace SchoolManagement.Repositories.StudentRepositories;
 
 public interface IStudentRepository
 {
-    public void CreateStudent(Student student);
+    public Task CreateStudentAsync(Student student);
 
-    public List<Student> GetAllStudents();
-    public Student GetStudentById(int studentId);
+    public Task<List<Student>> GetAllStudentsAsync();
+    public Task<Student> GetStudentByIdAsync(int studentId);
 
-    public void ModifyStudent(int studentId, Student student);
+    public Task ModifyStudentAsync(int studentId, Student student);
 
-    public void DeleteStudent(int studentId);
+    public Task DeleteStudentAsync(int studentId);
 }

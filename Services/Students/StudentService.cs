@@ -33,7 +33,7 @@ public class StudentService : IStudentService
 
     public void CreateStudent(Student student)
     {
-        studentRepository.CreateStudent(student);
+        studentRepository.CreateStudentAsync(student);
         logging.WriteLogs($"{student.StudentId} ID student added to students.json file");
     }
 
