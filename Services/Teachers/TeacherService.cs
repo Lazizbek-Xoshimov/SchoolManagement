@@ -11,7 +11,7 @@ public class TeacherService : ITeacherService
     private ILoggingService logging;
     private string[] teacherFullNames;
     private string[] teacherSubjects;
-    Random randomString = new Random();
+    Random randomString;
     
     public TeacherService()
     {
@@ -43,8 +43,10 @@ public class TeacherService : ITeacherService
             "Physical Education",
             "Art and Design"
         ];
+
+        this.randomString = new Random();
     }
-    public void AddRandomTeachers()
+    public async Task AddRandomTeachersAsync()
     {
         for (int i = 0; i < 10; i++)
         {
@@ -53,24 +55,26 @@ public class TeacherService : ITeacherService
             teacher.FullName = teacherFullNames[randomString.Next(10)];
             teacher.Subject = teacherSubjects[randomString.Next(10)];
 
-            CreateTeacher(teacher);
+            await CreateTeacherAsync(teacher);
         }
     }
 
-    public void CreateTeacher(Teacher teacher)
+    public async Task CreateTeacherAsync(Teacher teacher)
     {
-        teacher.TeacherId = teacherRepository.GetAll().Count;
+        var teachers = await teacherRepository.GetAllAsync();
+        teacher.TeacherId = teachers.Count();
 
-        if (teacherRepository.GetAll().Select(selectTeacher => selectTeacher.TeacherId).Contains(teacher.TeacherId))
+        if (teachers.Select(selectTeacher => selectTeacher.TeacherId).Contains(teacher.TeacherId))
             throw new NotFoundException("Database is empty.");
 
-        teacherRepository.Create(teacher);
+        await teacherRepository.CreateAsync(teacher);
         logging.WriteLogs($"{teacher.TeacherId} ID teacher added to teachers.json file");
     }
 
-    public Teacher GetTeacherById(int teacherId)
+    public async Task<Teacher> GetTeacherByIdAsync(int teacherId)
     {
-        var teacher = teacherRepository.GetAll().FirstOrDefault(teacher => teacher.TeacherId == teacherId);
+        var teachers = await teacherRepository.GetAllAsync();
+        var teacher = teachers.FirstOrDefault(teacher => teacher.TeacherId == teacherId);
         
         if (teacher is null)
             throw new NotFoundException("Teacher is not found.");
@@ -78,19 +82,19 @@ public class TeacherService : ITeacherService
         return teacher;
     }
 
-    public List<Teacher> GetAllTeachers()
+    public async Task<List<Teacher>> GetAllTeachersAsync()
     {
-        var teachers = teacherRepository.GetAll();
+        var teachers = await teacherRepository.GetAllAsync();
 
         if (teachers.Count().Equals(0)) 
             throw new NotFoundException("Database is empty.");
 
-        return teacherRepository.GetAll();
+        return teachers;
     }
 
-    public void ModifyTeacher(int teacherId, Teacher teacher)
+    public async Task ModifyTeacherAsync(int teacherId, Teacher teacher)
     {
-        var teachers = teacherRepository.GetAll();
+        var teachers = await teacherRepository.GetAllAsync();
 
         if (teachers.Count().Equals(0)) 
             throw new NotFoundException("Database is empty.");
@@ -98,13 +102,13 @@ public class TeacherService : ITeacherService
         if (!teachers.Select(selectTeacher => selectTeacher.TeacherId).Contains(teacherId))
             throw new NotFoundException("Teacher is not found.");
 
-        teacherRepository.Update(teacherId, teacher);
+        await teacherRepository.UpdateAsync(teacherId, teacher);
         logging.WriteLogs($"{teacher.TeacherId} ID teacher updated");
     }
 
-    public void DeleteTeacher(int teacherId)
+    public async Task DeleteTeacherAsync(int teacherId)
     {
-        var teachers = teacherRepository.GetAll();
+        var teachers = await teacherRepository.GetAllAsync();
 
         if (teachers.Count().Equals(0)) 
             throw new NotFoundException("Database is empty.");
@@ -114,7 +118,7 @@ public class TeacherService : ITeacherService
         if (teacher is null)
             throw new NotFoundException("Teaecher is not found.");
 
-        teacherRepository.Delete(teacher);
+        await teacherRepository.DeleteAsync(teacher);
         logging.WriteLogs($"{teacher.TeacherId} ID teacher deleted");            
     }
 }

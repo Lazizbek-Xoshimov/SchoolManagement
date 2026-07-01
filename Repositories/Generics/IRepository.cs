@@ -2,9 +2,9 @@ namespace SchoolManagement.Repositories.Generics;
 
 public interface IRepository<T>
 {
-    public void Create(T value);
-    public List<T> GetAll();
-    public T GetById(int id);
-    public void Update(int id, T value);
-    public void Delete(T value);
+    public Task CreateAsync(T value);
+    public Task<List<T>> GetAllAsync();
+    public Task<T> GetByIdAsync(int id);
+    public Task UpdateAsync(int id, T value);
+    public Task DeleteAsync(T value);
 }

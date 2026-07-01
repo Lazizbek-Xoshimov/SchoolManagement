@@ -5,53 +5,48 @@ namespace SchoolManagement.Repositories.Generics;
 
 public class Repository<T> : IRepository<T> where T: Teacher
 {
-    private string path;
-    private string content;
-    private List<T> objects;
-    private int creationId;
+    private string path = @"Data\teachers.json";
 
-    public Repository()
+    public async Task CreateAsync(T value)
     {
-        path = @"Data\teachers.json";
-        content = File.ReadAllText(path);
-        objects = JsonSerializer.Deserialize<List<T>>(content);
-
-        creationId = objects.Count.Equals(0) ? 0 : objects[objects.Count - 1].TeacherId + 1;
-    }
-
-    public void Create(T value)
-    {
+        var objects = await GetAllAsync();
+        int creationId = objects.Count.Equals(0) ? 0 : objects[objects.Count - 1].TeacherId + 1;
         value.TeacherId = creationId ++;
+
         objects.Add(value);
 
         string data = JsonSerializer.Serialize(objects, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(path, data);
+        await File.WriteAllTextAsync(path, data);
     }
 
-    public List<T> GetAll()
+    public async Task<List<T>> GetAllAsync()
     {
-        return objects;
+        string content = await File.ReadAllTextAsync(path);
+        return JsonSerializer.Deserialize<List<T>>(content);
     }
 
-    public T GetById(int id)
+    public async Task<T> GetByIdAsync(int id)
     {
-        return objects[id];
+        var objects = await GetAllAsync();
+        return objects.FirstOrDefault(obj => obj.TeacherId.Equals(id));
     }
 
-    public void Update(int id, T value)
+    public async Task UpdateAsync(int id, T value)
     {
+        var objects = await GetAllAsync();
         value.TeacherId = id;
         objects[id] = value;
 
         string data = JsonSerializer.Serialize(objects, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(path, data);
+        await File.WriteAllTextAsync(path, data);
     }
 
-    public void Delete(T value)
+    public async Task DeleteAsync(T value)
     {
+        var objects = await GetAllAsync();
         objects.Remove(value);
 
         string data = JsonSerializer.Serialize(objects, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(path, data);
+        await File.WriteAllTextAsync(path, data);
     }
 }

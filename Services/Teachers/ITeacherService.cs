@@ -4,13 +4,13 @@ namespace SchoolManagement.Services.Teachers;
 
 public interface ITeacherService
 {
-    public void AddRandomTeachers();
-    public void CreateTeacher(Teacher teacher);
+    public Task AddRandomTeachersAsync();
+    public Task CreateTeacherAsync(Teacher teacher);
 
-    public Teacher GetTeacherById(int teacherId);
-    public List<Teacher> GetAllTeachers();
+    public Task<Teacher> GetTeacherByIdAsync(int teacherId);
+    public Task<List<Teacher>> GetAllTeachersAsync();
 
-    public void ModifyTeacher(int teacherId, Teacher teacher);
+    public Task ModifyTeacherAsync(int teacherId, Teacher teacher);
 
-    public void DeleteTeacher(int teacherId);
+    public Task DeleteTeacherAsync(int teacherId);
 }

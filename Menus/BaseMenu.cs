@@ -49,7 +49,7 @@ public class BaseMenu
                     Console.Write("Select the necessary section: ");
                     int optionTeacher = int.Parse(Console.ReadLine());
 
-                    teacherMenu.SelectOption(optionTeacher);
+                    await teacherMenu.SelectOptionAsync(optionTeacher);
 
                     Console.WriteLine("Do you want to exit the program?");
                     Console.Write("(yes/no): ");

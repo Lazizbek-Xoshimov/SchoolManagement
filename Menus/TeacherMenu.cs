@@ -27,27 +27,27 @@ public class TeacherMenu
         Console.WriteLine("6. Delete teacher data");
     }
 
-    public void SelectOption(int option)
+    public async Task SelectOptionAsync(int option)
     {
         switch (option)
         {
-            case 1: AddRandomTeachersMenu(); break;
-            case 2: CreateTeacherMenu(); break;
-            case 3: GetTeacherByIdMenu(); break;
-            case 4: GetAllTeachersMenu(); break;
-            case 5: ModifyTeacherMenu(); break;
-            case 6: DeleteTeacherMenu(); break;
+            case 1: await AddRandomTeachersMenuAsync(); break;
+            case 2: await CreateTeacherMenuAsync(); break;
+            case 3: await GetTeacherByIdMenuAsync(); break;
+            case 4: await GetAllTeachersMenuAsync(); break;
+            case 5: await ModifyTeacherMenuAsync(); break;
+            case 6: await DeleteTeacherMenuAsync(); break;
             default: Console.WriteLine("You have selected the wrong section."); break;
         }
     }
 
-    public void AddRandomTeachersMenu()
+    public async Task AddRandomTeachersMenuAsync()
     {
-        teacherService.AddRandomTeachers();
+        await teacherService.AddRandomTeachersAsync();
         Console.WriteLine("Database filled with random teacher data.");
     }
 
-    public void CreateTeacherMenu()
+    public async Task CreateTeacherMenuAsync()
     {
         Teacher teacher = new Teacher();
 
@@ -57,25 +57,25 @@ public class TeacherMenu
         Console.Write("Enter which subject teacher: ");
         teacher.Subject = Console.ReadLine();
 
-        teacherService.CreateTeacher(teacher);
+        await teacherService.CreateTeacherAsync(teacher);
         Console.WriteLine("Teacher added to the database.");
     }
 
-    public void GetTeacherByIdMenu()
+    public async Task GetTeacherByIdMenuAsync()
     {
         Console.Write("Enter the teacher ID you're looking for: ");
         int teacherId = int.Parse(Console.ReadLine());
 
-        Teacher teacher = teacherService.GetTeacherById(teacherId);
+        Teacher teacher = await teacherService.GetTeacherByIdAsync(teacherId);
 
         Console.WriteLine($"Teacher's ID: {teacher.TeacherId}");
         Console.WriteLine($"Teacher's full name: {teacher.FullName}");
         Console.WriteLine($"Teacher's subject: {teacher.Subject}");
     }
 
-    public void GetAllTeachersMenu()
+    public async Task GetAllTeachersMenuAsync()
     {
-        List<Teacher> teachers = teacherService.GetAllTeachers();
+        List<Teacher> teachers = await teacherService.GetAllTeachersAsync();
 
         foreach (Teacher teacher in teachers)
         {
@@ -85,7 +85,7 @@ public class TeacherMenu
         }
     }
 
-    public void ModifyTeacherMenu()
+    public async Task ModifyTeacherMenuAsync()
     {
         Teacher teacher = new Teacher();
 
@@ -98,16 +98,16 @@ public class TeacherMenu
         Console.Write("Enter which subject teacher: ");
         teacher.Subject = Console.ReadLine();
 
-        teacherService.ModifyTeacher(teacherId, teacher);
+        await teacherService.ModifyTeacherAsync(teacherId, teacher);
         Console.WriteLine($"The teacher's information on ID {teacherId} has been changed.");
     }
 
-    public void DeleteTeacherMenu()
+    public async Task DeleteTeacherMenuAsync()
     {
         Console.Write("Enter the teacher ID to be deleted: ");
         int teacherId = int.Parse(Console.ReadLine());
 
-        teacherService.DeleteTeacher(teacherId);
+        await teacherService.DeleteTeacherAsync(teacherId);
         Console.WriteLine($"Teacher data with ID {teacherId} has been deleted.");
     }
 }
