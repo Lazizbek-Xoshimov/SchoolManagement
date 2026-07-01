@@ -7,7 +7,7 @@ namespace SchoolManagement.Repositories.StudentRepositories;
 public class StudentRepository : IStudentRepository
 {
     private string path = @"Data\students.json";
-    private List<Student> students;
+    private List<Student> students = new List<Student>();
 
     public async Task CreateStudentAsync(Student student)
     {

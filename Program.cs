@@ -5,7 +5,7 @@ namespace SchoolManagement;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         try
         {
@@ -16,7 +16,7 @@ public class Program
             Console.Write("Select the necessary section: ");
             int option = int.Parse(Console.ReadLine());
 
-            baseMenu.SelectOption(option);
+            await baseMenu.SelectOptionAsync(option);
         }
         catch (ValidationException exception)
         {

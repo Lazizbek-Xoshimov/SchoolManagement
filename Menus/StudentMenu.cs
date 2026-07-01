@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using SchoolManagement.Models;
 using SchoolManagement.Services.Students;
 
@@ -29,33 +28,33 @@ public class StudentMenu
         Console.WriteLine("12. Delete student data");
     }
 
-    public void SelectOption(int option)
+    public async Task SelectOptionAsync(int option)
     {
         switch (option)
         {
-            case 1: AddRandomStudentsMenu(); break;
-            case 2: AddStudentRangeMenu(); break;
-            case 3: CreateStudentMenu(); break;
-            case 4: GetAllStudentsMenu(); break;
-            case 5: GetStudentsByIdMenu(); break;
-            case 6: GetStudentsByNameMenu(); break;
-            case 7: GetPaginatedStudentsMenu(); break;
-            case 8: GetStudentsCountMenu(); break;
-            case 9: GetCleverStudentMenu(); break;
-            case 10: GetYoungestStudentMenu(); break;
-            case 11: ModifyStudentMenu(); break;
-            case 12: DeleteStudentMenu(); break;
+            case 1: await AddRandomStudentsMenuAsync(); break;
+            case 2: await AddStudentRangeMenuAsync(); break;
+            case 3: await CreateStudentMenuAsync(); break;
+            case 4: await GetAllStudentsMenuAsync(); break;
+            case 5: await GetStudentsByIdMenuAsync(); break;
+            case 6: await GetStudentsByNameMenuAsync(); break;
+            case 7: await GetPaginatedStudentsMenuAsync(); break;
+            case 8: await GetStudentsCountMenuAsync(); break;
+            case 9: await GetCleverStudentMenuAsync(); break;
+            case 10: await GetYoungestStudentMenuAsync(); break;
+            case 11: await ModifyStudentMenuAsync(); break;
+            case 12: await DeleteStudentMenuAsync(); break;
             default: Console.WriteLine("You have selected the wrong section."); break;
         }
     }
 
-    public void AddRandomStudentsMenu()
+    public async Task AddRandomStudentsMenuAsync()
     {
-        studentService.AddRandomStudentsAsync();
+        await studentService.AddRandomStudentsAsync();
         Console.WriteLine("The database was filled with random students.");
     }
 
-    public void CreateStudentMenu()
+    public async Task CreateStudentMenuAsync()
     {
         Student student = new Student();
 
@@ -72,13 +71,14 @@ public class StudentMenu
         Console.Write("Enter the student's grade: ");
         student.Grade = int.Parse(Console.ReadLine());
 
-        studentService.CreateStudentAsync(student);
+        await studentService.CreateStudentAsync(student);
         Console.WriteLine("Data added to the database.");
     }
 
-    public void GetAllStudentsMenu()
+    public async Task GetAllStudentsMenuAsync()
     {
-        foreach(var students in studentService.GetAllStudents())
+        var allStudents = await studentService.GetAllStudentsAsync();
+        foreach(var students in allStudents)
         {
             Console.WriteLine($"Students in {students.Key} course: ");
             foreach(var student in students)
@@ -92,12 +92,12 @@ public class StudentMenu
         }
     }
 
-    public void GetStudentsByIdMenu()
+    public async Task GetStudentsByIdMenuAsync()
     {
         Console.Write("Enter the ID of the student you want to get information about: ");
         int studentId = int.Parse(Console.ReadLine());
 
-        Student student = studentService.GetStudentById(studentId);
+        Student student = await studentService.GetStudentByIdAsync(studentId);
 
         Console.WriteLine($"StudentId: {student.StudentId}");
         Console.WriteLine($"Student full name: {student.FullName}");
@@ -106,7 +106,7 @@ public class StudentMenu
         Console.WriteLine($"Student course: {student.Course}");
     }
 
-    public void ModifyStudentMenu()
+    public async Task ModifyStudentMenuAsync()
     {
         Student student = new Student();
 
@@ -125,25 +125,25 @@ public class StudentMenu
         Console.Write("Enter student's grade: ");
         student.Grade = int.Parse(Console.ReadLine());
 
-        studentService.ModifyStudent(studentId, student);
+        await studentService.ModifyStudentAsync(studentId, student);
         Console.WriteLine($"Student data in index {studentId} has been changed.");
     }
 
-    public void DeleteStudentMenu()
+    public async Task DeleteStudentMenuAsync()
     {
         Console.Write("Enter the student ID to be deleted: ");
         int studentId = int.Parse(Console.ReadLine());
         
-        studentService.DeleteStudent(studentId);
+        await studentService.DeleteStudentAsync(studentId);
         Console.WriteLine($"Student information in {studentId} ID has been deleted.");
     }
 
-    public void GetStudentsByNameMenu()
+    public async Task GetStudentsByNameMenuAsync()
     {
         Console.Write("Enter the name of student you are looking for: ");
         string name = Console.ReadLine();
 
-        var studentCollection = studentService.GetStudentsByName(name);
+        var studentCollection = await studentService.GetStudentsByNameAsync(name);
 
         foreach(var students in studentCollection)
         {
@@ -163,7 +163,7 @@ public class StudentMenu
         }
     }
 
-    public void GetPaginatedStudentsMenu()
+    public async Task GetPaginatedStudentsMenuAsync()
     {
         Console.Write("Enter the page: ");
         int page = int.Parse(Console.ReadLine());
@@ -171,7 +171,7 @@ public class StudentMenu
         Console.Write("Enter the page size: ");
         int pageSize = int.Parse(Console.ReadLine());
 
-        var students = studentService.GetPaginatedStudents(page, pageSize);
+        var students = await studentService.GetPaginatedStudentsAsync(page, pageSize);
         
         foreach (var student in students)
         {
@@ -183,13 +183,13 @@ public class StudentMenu
         }
     }
 
-    public void GetStudentsCountMenu()
+    public async Task GetStudentsCountMenuAsync()
     {
-        int studentsCount = studentService.GetStudentsCount();
+        int studentsCount = await studentService.GetStudentsCountAsync();
         Console.WriteLine($"There are {studentsCount} students in the database.");
     }
 
-    public void AddStudentRangeMenu()
+    public async Task AddStudentRangeMenuAsync()
     {
         List<Student> studentRange = new List<Student>();
         string wantAdd = string.Empty;
@@ -221,21 +221,25 @@ public class StudentMenu
             wantAdd = Console.ReadLine();
         } while (wantAdd.Equals("yes"));
 
-        studentService.AddStudentRange(studentRange.ToArray());
+        await studentService.AddStudentRangeAsync(studentRange.ToArray());
         Console.WriteLine("Students have been added to the database.");
     }
 
-    public void GetCleverStudentMenu()
+    public async Task GetCleverStudentMenuAsync()
     {
-        foreach (var room in studentService.GetCleverStudent())
+        var cleverStudents = await studentService.GetCleverStudentAsync();
+        
+        foreach (var room in cleverStudents)
         {
             Console.WriteLine($"{room.Value.FullName} is a clever in {room.Key} course.");
         }
     }
 
-    public void GetYoungestStudentMenu()
+    public async Task GetYoungestStudentMenuAsync()
     {
-        foreach (var room in studentService.GetYoungestStudent())
+        var youngestStudents = await studentService.GetYoungestStudentAsync();
+
+        foreach (var room in youngestStudents)
         {
             Console.WriteLine($"{room.Value.FullName} is a youngest in {room.Key} course.");
         }

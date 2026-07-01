@@ -14,7 +14,7 @@ public class BaseMenu
         Console.WriteLine("0. Exit");
     }
 
-    public void SelectOption(int option)
+    public async Task SelectOptionAsync(int option)
     {
         switch (option)
         {
@@ -29,7 +29,7 @@ public class BaseMenu
                     Console.Write("Select the necessary section: ");
                     int optionStudent = int.Parse(Console.ReadLine());
 
-                    studentMenu.SelectOption(optionStudent);
+                    await studentMenu.SelectOptionAsync(optionStudent);
 
                     Console.WriteLine("Do you want to exit the program?");
                     Console.Write("(yes/no): ");
