@@ -14,8 +14,10 @@ public class StudentRepository : IStudentRepository
         using StudentFileManager manager = new StudentFileManager(path);
 
         string content = await File.ReadAllTextAsync(path);
-        student.StudentId = JsonSerializer.Deserialize<List<Student>>(content).Count.Equals(0) 
+        int studentId = JsonSerializer.Deserialize<List<Student>>(content).Count.Equals(0) 
             ? 0 : students[students.Count - 1].StudentId + 1;
+        
+        student.StudentId = studentId ++;
         students.Add(student);
         
         string data = JsonSerializer.Serialize(students);
