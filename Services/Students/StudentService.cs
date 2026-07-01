@@ -31,13 +31,13 @@ public class StudentService : IStudentService
         ];
     }
 
-    public void CreateStudent(Student student)
+    public async Task CreateStudentAsync(Student student)
     {
-        studentRepository.CreateStudentAsync(student);
+        await studentRepository.CreateStudentAsync(student);
         logging.WriteLogs($"{student.StudentId} ID student added to students.json file");
     }
 
-    public void AddRandomStudents()
+    public async Task AddRandomStudentsAsync()
     {
         Random random = new Random();
 
@@ -50,13 +50,14 @@ public class StudentService : IStudentService
             student.Grade = random.Next(1, 5);
             student.Course = random.Next(1, 5);
 
-            CreateStudent(student);
+            await CreateStudentAsync(student);
         }
     }
 
-    public IEnumerable<IGrouping<int, Student>> GetAllStudents()
+    public async Task<IEnumerable<IGrouping<int, Student>>> GetAllStudentsAsync()
     {
-        var studentCollection = studentRepository.GetAllStudents().GroupBy(student => student.Course);
+        var students = await studentRepository.GetAllStudentsAsync();
+        var studentCollection = students.GroupBy(student => student.Course);
 
         if (studentCollection.Count().Equals(0))
             throw new NotFoundException("Database is empty.");
@@ -64,20 +65,22 @@ public class StudentService : IStudentService
         return studentCollection;
     }
 
-    public Student GetStudentById(int studentId)
+    public async Task<Student> GetStudentByIdAsync(int studentId)
     {
-        if (!studentRepository.GetAllStudents().Select(student => student.StudentId).Contains(studentId))
+        var students = await studentRepository.GetAllStudentsAsync();
+
+        if (!students.Select(student => student.StudentId).Contains(studentId))
             throw new NotFoundException("Student is not found.");
 
-        return studentRepository.GetStudentById(studentId);
+        return await studentRepository.GetStudentByIdAsync(studentId);
     }
 
-    public IEnumerable<IGrouping<bool, Student>> GetStudentsByName(string name)
+    public async Task<IEnumerable<IGrouping<bool, Student>>> GetStudentsByNameAsync(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ValidationException("Name must not be empty.");
 
-        var students = studentRepository.GetAllStudents();
+        var students = await studentRepository.GetAllStudentsAsync();
 
         if (students.Count.Equals(0))
             throw new NotFoundException("Database is empty.");
@@ -85,12 +88,12 @@ public class StudentService : IStudentService
         if (!students.Select(student => student.FullName).Contains(name))
             throw new NotFoundException("Students are not found.");
 
-        return studentRepository.GetAllStudents().GroupBy(student => student.FullName.Contains(name));
+        return students.GroupBy(student => student.FullName.Contains(name));
     }
 
-    public IEnumerable<Student> GetPaginatedStudents(int page, int pageSize)
+    public async Task<IEnumerable<Student>> GetPaginatedStudentsAsync(int page, int pageSize)
     {
-        var students = studentRepository.GetAllStudents();
+        var students = await studentRepository.GetAllStudentsAsync();
 
         if (students.Count().Equals(0))
             throw new NotFoundException("Database is empty.");
@@ -98,9 +101,10 @@ public class StudentService : IStudentService
         return students.Paginate(page, pageSize);
     }
 
-    public int GetStudentsCount()
+    public async Task<int> GetStudentsCountAsync()
     {
-        var studentCount = studentRepository.GetAllStudents().Count();
+        var students = await studentRepository.GetAllStudentsAsync();
+        var studentCount = students.Count();
         
         if (studentCount.Equals(0))
             throw new NotFoundException("Database is empty");
@@ -108,12 +112,14 @@ public class StudentService : IStudentService
         return studentCount;
     }
 
-    public void ModifyStudent(int studentId, Student student)
+    public async Task ModifyStudentAsync(int studentId, Student student)
     {
-        if (!studentRepository.GetAllStudents().Select(student => student.StudentId).Contains(studentId))
+        var students = await studentRepository.GetAllStudentsAsync();
+
+        if (!students.Select(student => student.StudentId).Contains(studentId))
             throw new NotFoundException("Student is not found.");
 
-        Student modifiedStudent = studentRepository.GetStudentById(studentId);
+        Student modifiedStudent = await studentRepository.GetStudentByIdAsync(studentId);
 
         modifiedStudent.FullName = student.FullName;
         modifiedStudent.Age = student.Age;
@@ -122,20 +128,22 @@ public class StudentService : IStudentService
         if (string.IsNullOrWhiteSpace(modifiedStudent.FullName))
             throw new ValidationException("Full Name must not be empty."); 
 
-        studentRepository.ModifyStudent(studentId, modifiedStudent);
+        await studentRepository.ModifyStudentAsync(studentId, modifiedStudent);
         logging.WriteLogs($"{studentId} ID student updated");
     }
 
-    public void DeleteStudent(int studentId)
+    public async Task DeleteStudentAsync(int studentId)
     {
-        if (!studentRepository.GetAllStudents().Select(student => student.StudentId).Contains(studentId))
+        var students = await studentRepository.GetAllStudentsAsync();
+
+        if (!students.Select(student => student.StudentId).Contains(studentId))
             throw new NotFoundException("Student is not found.");
 
-        studentRepository.DeleteStudent(studentId);
+        await studentRepository.DeleteStudentAsync(studentId);
         logging.WriteLogs($"{studentId} ID student deleted from students.json file");
     }
 
-    public void AddStudentRange(params Student[] studentRange)
+    public async Task AddStudentRangeAsync(params Student[] studentRange)
     {        
         if (studentRange.Count().Equals(0))
             throw new ValidationException("Student range must not be empty.");
@@ -145,15 +153,17 @@ public class StudentService : IStudentService
         if (sameStudent is not null)
             throw new ValidationException("Student id shouldn't be the same.");
 
-        foreach (var student in studentRepository.GetAllStudents())
+        var students = await studentRepository.GetAllStudentsAsync();
+
+        foreach (var student in students)
         {
-            CreateStudent(student);
+            await CreateStudentAsync(student);
         }
     }
 
-    public IDictionary<int, Student> GetCleverStudent()
+    public async Task<IDictionary<int, Student>> GetCleverStudentAsync()
     {
-        var students = studentRepository.GetAllStudents();
+        var students = await studentRepository.GetAllStudentsAsync();
 
         if (students.Count().Equals(0))
             throw new NotFoundException("Database is empty.");
@@ -161,9 +171,9 @@ public class StudentService : IStudentService
         return students.FindFirstOrDefaultCleverStudent();
     }
 
-    public IDictionary<int, Student> GetYoungestStudent()
+    public async Task<IDictionary<int, Student>> GetYoungestStudentAsync()
     {
-        var students = studentRepository.GetAllStudents();
+        var students = await studentRepository.GetAllStudentsAsync();
 
         if (students.Count().Equals(0))
             throw new NotFoundException("Database is empty.");

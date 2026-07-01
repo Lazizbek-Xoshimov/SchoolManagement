@@ -51,7 +51,7 @@ public class StudentMenu
 
     public void AddRandomStudentsMenu()
     {
-        studentService.AddRandomStudents();
+        studentService.AddRandomStudentsAsync();
         Console.WriteLine("The database was filled with random students.");
     }
 
@@ -72,7 +72,7 @@ public class StudentMenu
         Console.Write("Enter the student's grade: ");
         student.Grade = int.Parse(Console.ReadLine());
 
-        studentService.CreateStudent(student);
+        studentService.CreateStudentAsync(student);
         Console.WriteLine("Data added to the database.");
     }
 

@@ -4,19 +4,19 @@ namespace SchoolManagement.Services.Students;
 
 public interface IStudentService
 {
-    public void CreateStudent(Student student);
-    public void AddRandomStudents();
-    public void AddStudentRange(params Student[] studentsRange);
+    public Task CreateStudentAsync(Student student);
+    public Task AddRandomStudentsAsync();
+    public Task AddStudentRangeAsync(params Student[] studentsRange);
 
-    public IEnumerable<IGrouping<int, Student>> GetAllStudents();
-    public Student GetStudentById(int studentId);
-    public IEnumerable<IGrouping<bool, Student>> GetStudentsByName(string name);
-    public IEnumerable<Student> GetPaginatedStudents(int page, int pageSize);
-    public int GetStudentsCount();
-    public IDictionary<int, Student> GetCleverStudent();
-    public IDictionary<int, Student> GetYoungestStudent();
+    public Task<IEnumerable<IGrouping<int, Student>>> GetAllStudentsAsync();
+    public Task<Student> GetStudentByIdAsync(int studentId);
+    public Task<IEnumerable<IGrouping<bool, Student>>> GetStudentsByNameAsync(string name);
+    public Task<IEnumerable<Student>> GetPaginatedStudentsAsync(int page, int pageSize);
+    public Task<int> GetStudentsCountAsync();
+    public Task<IDictionary<int, Student>> GetCleverStudentAsync();
+    public Task<IDictionary<int, Student>> GetYoungestStudentAsync();
 
-    public void ModifyStudent(int studentId, Student student);
+    public Task ModifyStudentAsync(int studentId, Student student);
 
-    public void DeleteStudent(int studentId);
+    public Task DeleteStudentAsync(int studentId);
 }
